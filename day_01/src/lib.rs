@@ -46,7 +46,8 @@ impl Move {
 fn get_num_spins(start: i32, end: i32) -> i32 {
     let min = start.min(end) as f64;
     let max = start.max(end) as f64;
-    ((max / 100.0).floor() - ((min - 1.0) / 100.0).floor()) as i32
+    let correction = if end % 100 == 0 { -1 } else { 0 };
+    ((max / 100.0).floor() - ((min - 1.0) / 100.0).floor()) as i32 + correction
 }
 
 pub fn get_password(input: &str) -> (i32, i32) {
@@ -111,14 +112,14 @@ mod tests {
 
         let (password, num_spins) = get_password(input);
         assert_eq!(3, password);
-        assert_eq!(6, num_spins - password);
+        assert_eq!(6, num_spins);
     }
 
     #[test]
     fn num_spins() {
         assert_eq!(1, get_num_spins(50, -18));
         assert_eq!(0, get_num_spins(82, 52));
-        assert_eq!(1, get_num_spins(52, 0));
+        assert_eq!(0, get_num_spins(52, 0));
         assert_eq!(10, get_num_spins(50, 1050));
     }
 }
