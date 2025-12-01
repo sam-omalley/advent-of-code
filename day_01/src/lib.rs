@@ -43,8 +43,15 @@ impl Move {
     }
 }
 
-pub fn get_password(input: &str) -> i32 {
+fn get_num_spins(start: i32, end: i32) -> i32 {
+    let min = start.min(end) as f64;
+    let max = start.max(end) as f64;
+    ((max / 100.0).floor() - ((min - 1.0) / 100.0).floor()) as i32
+}
+
+pub fn get_password(input: &str) -> (i32, i32) {
     let mut password: i32 = 0;
+    let mut num_spins: i32 = 0;
     let mut position: i32 = 50;
 
     for line in input.lines() {
@@ -56,7 +63,10 @@ pub fn get_password(input: &str) -> i32 {
 
         let movement = Move::parse(line);
 
-        position = movement.apply(position);
+        let previous_position = position;
+        position = movement.apply(previous_position);
+
+        num_spins += get_num_spins(previous_position, position);
 
         // Rust modulo keeps the sign of the input, so we need to use mathematical modulo.
         if position.rem_euclid(100) == 0 {
@@ -64,7 +74,7 @@ pub fn get_password(input: &str) -> i32 {
         }
     }
 
-    password
+    (password, num_spins)
 }
 
 #[cfg(test)]
@@ -99,6 +109,16 @@ mod tests {
             R14
             L82";
 
-        assert_eq!(3, get_password(input));
+        let (password, num_spins) = get_password(input);
+        assert_eq!(3, password);
+        assert_eq!(6, num_spins - password);
+    }
+
+    #[test]
+    fn num_spins() {
+        assert_eq!(1, get_num_spins(50, -18));
+        assert_eq!(0, get_num_spins(82, 52));
+        assert_eq!(1, get_num_spins(52, 0));
+        assert_eq!(10, get_num_spins(50, 1050));
     }
 }

@@ -18,7 +18,8 @@ fn main() {
 fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
     let contents = fs::read_to_string(config.file_path)?;
 
-    println!("The password is: {}", get_password(&contents));
+    let (password, num_spins) = get_password(&contents);
+    println!("The password is: {password}. Num spins: {num_spins}");
 
     Ok(())
 }
