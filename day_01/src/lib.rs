@@ -78,18 +78,23 @@ pub fn get_password(input: &str) -> (i32, i32) {
 mod tests {
     use super::*;
 
+    #[track_caller]
+    fn assert_mod100_eq(a: i32, b: i32) {
+        assert_eq!(a.rem_euclid(100), b.rem_euclid(100));
+    }
+
     #[test]
     fn test_dial() {
-        assert_eq!(82, Move::Left(68).apply(50).rem_euclid(100));
-        assert_eq!(52, Move::Left(30).apply(82).rem_euclid(100));
-        assert_eq!(0, Move::Right(48).apply(52).rem_euclid(100));
-        assert_eq!(95, Move::Left(5).apply(0).rem_euclid(100));
-        assert_eq!(55, Move::Right(60).apply(95).rem_euclid(100));
-        assert_eq!(0, Move::Left(55).apply(55).rem_euclid(100));
-        assert_eq!(99, Move::Left(1).apply(0).rem_euclid(100));
-        assert_eq!(0, Move::Left(99).apply(99).rem_euclid(100));
-        assert_eq!(14, Move::Right(14).apply(0).rem_euclid(100));
-        assert_eq!(32, Move::Left(82).apply(14).rem_euclid(100));
+        assert_mod100_eq(82, Move::Left(68).apply(50));
+        assert_mod100_eq(52, Move::Left(30).apply(82));
+        assert_mod100_eq(0, Move::Right(48).apply(52));
+        assert_mod100_eq(95, Move::Left(5).apply(0));
+        assert_mod100_eq(55, Move::Right(60).apply(95));
+        assert_mod100_eq(0, Move::Left(55).apply(55));
+        assert_mod100_eq(99, Move::Left(1).apply(0));
+        assert_mod100_eq(0, Move::Left(99).apply(99));
+        assert_mod100_eq(14, Move::Right(14).apply(0));
+        assert_mod100_eq(32, Move::Left(82).apply(14));
     }
 
     #[test]
