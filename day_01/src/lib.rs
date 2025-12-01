@@ -3,16 +3,13 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn build(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 2 {
-            return Err("Not enough arguments");
-        } else if args.len() > 2 {
-            return Err("Too many arguments");
+    pub fn build(args: &[String]) -> Result<Config, String> {
+        match args {
+            [_, file_path] => Ok(Self {
+                file_path: file_path.clone(),
+            }),
+            _ => Err("usage: <program> <file>".into()),
         }
-
-        let file_path = args[1].clone();
-
-        Ok(Config { file_path })
     }
 }
 
@@ -34,20 +31,19 @@ impl Move {
     }
 
     fn apply(&self, position: i32) -> i32 {
-        let delta: i32 = match *self {
-            Move::Left(clicks) => -clicks,
-            Move::Right(clicks) => clicks,
-        };
-
-        position + delta
+        match *self {
+            Move::Left(n) => position - n,
+            Move::Right(n) => position + n,
+        }
     }
 }
 
 fn get_num_spins(start: i32, end: i32) -> i32 {
-    let min = start.min(end) as f64;
-    let max = start.max(end) as f64;
+    let min = start.min(end);
+    let max = start.max(end);
+    // Do not count the final position as a spin.
     let correction = if end % 100 == 0 { -1 } else { 0 };
-    ((max / 100.0).floor() - ((min - 1.0) / 100.0).floor()) as i32 + correction
+    max.div_euclid(100) - (min - 1).div_euclid(100) + correction
 }
 
 pub fn get_password(input: &str) -> (i32, i32) {
