@@ -1,18 +1,13 @@
 use day_01::{Config, get_password};
-use std::{env, error, fs, process};
+use std::{env, error, fs};
 
-fn main() {
+fn main() -> Result<(), Box<dyn error::Error>> {
     let args: Vec<String> = env::args().collect();
 
-    let config = Config::build(&args).unwrap_or_else(|err| {
-        println!("Problem parsing arguments: {err}");
-        process::exit(1);
-    });
+    let config = Config::build(&args)?;
+    run(config)?;
 
-    if let Err(e) = run(config) {
-        println!("Application error: {e}");
-        process::exit(1);
-    }
+    Ok(())
 }
 
 fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
