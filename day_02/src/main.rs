@@ -15,7 +15,8 @@ fn main() -> Result<(), Box<dyn error::Error>> {
 
 fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
     let contents = fs::read_to_string(config.file_path)?;
-    let mut total = 0;
+    let mut total_a = 0;
+    let mut total_b = 0;
 
     for interval in contents.split(",") {
         let interval = interval.trim();
@@ -30,9 +31,10 @@ fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
 
         let a: u64 = a.parse()?;
         let b: u64 = b.parse()?;
-        total += check_all_naughty_pairs(a, b);
+        total_a += check_all_naughty_pairs(a, b);
+        total_b += check_all_naughty_patterns(a, b);
     }
-    println!("Total: {total}");
+    println!("Total Part A: {total_a}, Total Part B: {total_b}");
 
     Ok(())
 }
