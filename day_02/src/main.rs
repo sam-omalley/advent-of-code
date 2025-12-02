@@ -1,17 +1,25 @@
-use std::io;
-use std::io::IsTerminal;
+use common::Config;
+use day_02::*;
+use std::env;
+use std::error;
+use std::fs;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // If stdin is a terminal (no pipe), exit early
-    if io::stdin().is_terminal() {
-        std::process::exit(1);
-    }
+fn main() -> Result<(), Box<dyn error::Error>> {
+    let args: Vec<String> = env::args().collect();
 
-    let mut line = String::new();
-    io::stdin().read_line(&mut line)?;
+    let config = Config::build(&args)?;
+    run(config)?;
 
-    for interval in line.split(",") {
-        if line.trim().is_empty() {
+    Ok(())
+}
+
+fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
+    let contents = fs::read_to_string(config.file_path)?;
+    let mut total = 0;
+
+    for interval in contents.split(",") {
+        let interval = interval.trim();
+        if interval.is_empty() {
             continue;
         }
 
@@ -20,17 +28,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             std::process::exit(1);
         };
 
-        println!("Interval: {interval}");
-
-        println!("{a}      {b}");
-
-        //let a: u64 = a.parse()?;
-        ////let b: u64 = b.parse()?;
-
-        //println!("{a}===={b}");
-
+        let a: u64 = a.parse()?;
+        let b: u64 = b.parse()?;
+        total += check_all_naughty_pairs(a, b);
     }
-
+    println!("Total: {total}");
 
     Ok(())
 }
