@@ -16,12 +16,11 @@ fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
     let mut total_a = 0;
     let mut total_b = 0;
 
-    for interval in contents.split(",") {
-        let interval = interval.trim();
-        if interval.is_empty() {
-            continue;
-        }
-
+    for interval in contents
+        .split(",")
+        .map(|x| x.trim())
+        .filter(|x| !x.is_empty())
+    {
         let Some((a, b)) = interval.split_once("-") else {
             eprintln!("Error processing {interval}");
             std::process::exit(1);

@@ -36,15 +36,12 @@ pub fn get_password(input: &str) -> (i32, i32) {
     let mut num_spins: i32 = 0;
     let mut position: i32 = 50;
 
-    for line in input.lines() {
-        let line = line.trim();
-
-        if line.is_empty() {
-            continue;
-        }
-
-        let movement = Move::parse(line);
-
+    for movement in input
+        .lines()
+        .map(|line| line.trim())
+        .filter(|line| !line.is_empty())
+        .map(Move::parse)
+    {
         let previous_position = position;
         position = movement.apply(previous_position);
 
