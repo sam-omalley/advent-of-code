@@ -14,7 +14,8 @@ fn main() -> Result<(), Box<dyn error::Error>> {
 fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
     let contents = fs::read_to_string(config.file_path)?;
 
-    let mut total = 0;
+    let mut total_a: u64 = 0;
+    let mut total_b: u64 = 0;
 
     for line in contents
         .lines()
@@ -22,10 +23,11 @@ fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
         .filter(|x| !x.is_empty())
     {
         let bb = BatteryBank::parse(line);
-        total += bb.get_max();
+        total_a += bb.get_max(2);
+        total_b += bb.get_max(12);
     }
 
-    println!("Part 1: {total}");
+    println!("Part 1: {total_a}, Part 2: {total_b}");
 
     Ok(())
 }
