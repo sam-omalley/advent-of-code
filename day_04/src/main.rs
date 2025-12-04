@@ -21,10 +21,10 @@ fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
         contents.lines().map(|x| x.trim()).filter(|x| !x.is_empty()),
     );
 
-    let total = grid.get_rolls(false);
+    let total = grid.get_rolls();
     println!("Part 1: {total}");
 
-    let total = grid.get_rolls(true);
+    let total = grid.get_rolls_exhaustive();
     println!("Part 2: {total}");
 
     Ok(())

@@ -75,28 +75,43 @@ impl Map {
         total
     }
 
-    pub fn get_rolls(&self, deep: bool) -> u32 {
+    pub fn get_rolls(&self) -> u32 {
+        let mut total: u32 = 0;
+
+        for y in self.min_y()..=self.max_y() {
+            for x in self.min_x()..=self.max_x() {
+                if self.get(x, y) == 0 {
+                    continue;
+                }
+
+                if self.count_neighbours(x, y) < 4 {
+                    total += 1;
+                }
+            }
+        }
+
+        total
+    }
+
+    pub fn get_rolls_exhaustive(&self) -> u32 {
         let mut total: u32 = 0;
         let mut made_changes = true;
-        let mut result_map = self.clone();
-        let mut first = true;
 
-        while (first || deep) && made_changes {
+        let mut map = self.clone();
+
+        while made_changes {
             made_changes = false;
-            first = false;
-            let map = result_map.clone();
 
             for y in map.min_y()..=map.max_y() {
                 for x in map.min_x()..=map.max_x() {
                     if map.get(x, y) == 0 {
                         continue;
                     }
-                    let count = map.count_neighbours(x, y);
 
-                    if count < 4 {
+                    if map.count_neighbours(x, y) < 4 {
                         total += 1;
                         made_changes = true;
-                        result_map.set(x, y, 0);
+                        map.set(x, y, 0);
                     }
                 }
             }
@@ -139,8 +154,10 @@ mod tests {
         assert_eq!(map.get(4, 1), 1);
         assert_eq!(map.get(5, 1), 0);
 
+        assert_eq!(map.count_neighbours(3, 1), 3);
+
         map.print();
-        assert_eq!(map.get_rolls(true), 13);
-        assert_eq!(map.get_rolls(false), 43);
+        assert_eq!(map.get_rolls(), 13);
+        assert_eq!(map.get_rolls_exhaustive(), 43);
     }
 }
