@@ -1,3 +1,4 @@
+#[derive(Clone)]
 pub struct Map {
     grid: Vec<Vec<u8>>,
 }
@@ -34,6 +35,10 @@ impl Map {
         self.grid[y][x]
     }
 
+    pub fn set(&mut self, x: usize, y: usize, val: u8) {
+        self.grid[y][x] = val;
+    }
+
     pub fn min_x(&self) -> usize {
         1
     }
@@ -50,24 +55,36 @@ impl Map {
         self.grid.len() - 2
     }
 
-    pub fn get_rolls(&self) -> u32 {
+    pub fn get_rolls(&self, deep: bool) -> u32 {
         let mut total: u32 = 0;
-        for y in self.min_y()..=self.max_y() {
-            for x in self.min_x()..=self.max_x() {
-                if self.get(x, y) == 0 {
-                    continue;
-                }
-                let count = self.get(x - 1, y - 1)
-                    + self.get(x, y - 1)
-                    + self.get(x + 1, y - 1)
-                    + self.get(x + 1, y)
-                    + self.get(x + 1, y + 1)
-                    + self.get(x, y + 1)
-                    + self.get(x - 1, y + 1)
-                    + self.get(x - 1, y);
+        let mut made_changes = true;
+        let mut result_map = self.clone();
+        let mut first = true;
 
-                if count < 4 {
-                    total += 1;
+        while (first || deep) && made_changes {
+            made_changes = false;
+            first = false;
+            let map = result_map.clone();
+
+            for y in map.min_y()..=map.max_y() {
+                for x in map.min_x()..=map.max_x() {
+                    if map.get(x, y) == 0 {
+                        continue;
+                    }
+                    let count = map.get(x - 1, y - 1)
+                        + map.get(x, y - 1)
+                        + map.get(x + 1, y - 1)
+                        + map.get(x + 1, y)
+                        + map.get(x + 1, y + 1)
+                        + map.get(x, y + 1)
+                        + map.get(x - 1, y + 1)
+                        + map.get(x - 1, y);
+
+                    if count < 4 {
+                        total += 1;
+                        made_changes = true;
+                        result_map.set(x, y, 0);
+                    }
                 }
             }
         }
@@ -75,8 +92,7 @@ impl Map {
         total
     }
 
-    pub fn print(&self) {
-    }
+    pub fn print(&self) {}
 }
 
 #[cfg(test)]
