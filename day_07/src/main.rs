@@ -17,6 +17,7 @@ fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
     let manifold = Manifold::parse(&contents);
 
     println!("Part 1: {}", manifold.get_num_splits());
+    println!("Part 2: {}", manifold.get_num_timelines());
 
     Ok(())
 }
