@@ -1,7 +1,7 @@
 use common::Config;
-use core::f64;
 use day_08::*;
 use itertools::Itertools;
+use std::collections::HashSet;
 use std::env;
 use std::error;
 use std::fs;
@@ -21,24 +21,92 @@ fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
         cloud.add_str(line)?;
     }
 
-    let mut min_idx = 0;
-    let mut min_val = f64::INFINITY;
-    for (idx, val) in cloud
+    let mut circuits = Vec::<HashSet<Point>>::default();
+
+    // for (p1, p2, distance) in cloud
+    //     .points
+    //     .iter()
+    //     .combinations(2)
+    //     .map(|pair| {
+    //         let p1 = pair.first().unwrap();
+    //         let p2 = pair.last().unwrap();
+    //         (*p1, *p2, p1.distance(p2))
+    //     })
+    //     .sorted_by(|(_, _, d1), (_, _, d2)| d1.partial_cmp(d2).unwrap())
+    // {
+    //     println!("{p1:?} -> {p2:?} = {distance:.2}");
+    // }
+
+    'outer: for (p1, p2, distance) in cloud
         .points
         .iter()
         .combinations(2)
-        .enumerate()
-        .map(|(idx, pair)| (idx, pair.first().unwrap().distance(pair.last().unwrap())))
+        .map(|pair| {
+            let p1 = pair.first().unwrap();
+            let p2 = pair.last().unwrap();
+            (*p1, *p2, p1.distance(p2))
+        })
+        .sorted_by(|(_, _, d1), (_, _, d2)| d1.partial_cmp(d2).unwrap()).take(config.max)
     {
-        if val < min_val {
-            min_val = val;
-            min_idx = idx;
+        let mut candidate_circuits = HashSet::<usize>::default();
+        for (idx, circuit) in circuits.iter().enumerate() {
+            if circuit.contains(p1) || circuit.contains(p2) {
+                candidate_circuits.insert(idx);
+            }
+
+            if circuit.contains(p1) && circuit.contains(p2) {
+                println!("Skipped edge because it is in circuit #{idx}: {p1:?} -> {p2:?} - len: {distance:.2}");
+                //println!("Grow junction box: {circuit:?}, {p1:?} {p2:?}");
+                continue 'outer;
+            }
         }
+
+        if candidate_circuits.is_empty() {
+            println!("New circuit #{}: {p1:?} -> {p2:?} - len: {distance:.2}", circuits.len());
+            let mut junction = HashSet::new();
+            junction.insert(p1.clone());
+            junction.insert(p2.clone());
+            circuits.push(junction);
+        } else if candidate_circuits.len() == 2 {
+            let mut iter = candidate_circuits.iter();
+
+            let a_idx = iter.next().unwrap();
+            let b_idx = iter.next().unwrap();
+            println!("Merged circuits #{a_idx} and #{b_idx}");
+
+            let b = circuits[*b_idx].clone();
+            circuits[*a_idx].extend(b);
+            circuits.remove(*b_idx);
+
+            continue 'outer;
+            
+        } else if candidate_circuits.len() == 1 {
+            let mut iter = candidate_circuits.iter();
+            let a_idx = iter.next().unwrap();
+            println!("Added to #{a_idx} circuit: {p1:?} -> {p2:?} - len: {distance:.2}");
+            circuits[*a_idx].insert(p1.clone());
+            circuits[*a_idx].insert(p2.clone());
+            continue 'outer;
+
+        } else {
+            panic!("This shouldn't happen: {}", candidate_circuits.len());
+        }
+
+        //circuit.insert(p1.clone());
+        //circuit.insert(p2.clone());
+        //println!("Grow junction box: {circuit:?}, {p1:?} {p2:?}");
+
+        // If circuits is empty, or if no existing circuits contain our points. Create
+        // a new circuit.
+        //println!("New junction box: {p1:?} {p2:?}");
     }
-    println!(
-        "{min_val}, {:?}",
-        cloud.points.iter().combinations(2).nth(min_idx)
-    );
+
+    let mut lengths: Vec<usize> = circuits.iter().map(|c| c.len()).collect();
+    lengths.sort_unstable_by(|a, b| b.cmp(a));
+    for l in &lengths {
+        println!("{l}");
+    }
+    println!("Part 1: {}", lengths.iter().take(3).product::<usize>());
 
     Ok(())
 }

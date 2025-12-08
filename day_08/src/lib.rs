@@ -24,7 +24,7 @@ impl PointCloud {
     }
 }
 
-#[derive(Default, Debug, PartialEq, PartialOrd, Ord, Eq, Clone)]
+#[derive(Hash, Default, Debug, PartialEq, PartialOrd, Ord, Eq, Clone)]
 pub struct Point(i64, i64, i64);
 
 impl Point {
