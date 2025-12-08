@@ -5,7 +5,6 @@ use std::collections::HashSet;
 use std::env;
 use std::error;
 use std::fs;
-use std::usize;
 
 fn main() -> Result<(), Box<dyn error::Error>> {
     let config = Config::build(env::args())?;
@@ -23,21 +22,6 @@ fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
     }
 
     let mut circuits = Vec::<HashSet<Point>>::default();
-
-    // for (p1, p2, distance) in cloud
-    //     .points
-    //     .iter()
-    //     .combinations(2)
-    //     .map(|pair| {
-    //         let p1 = pair.first().unwrap();
-    //         let p2 = pair.last().unwrap();
-    //         (*p1, *p2, p1.distance(p2))
-    //     })
-    //     .sorted_by(|(_, _, d1), (_, _, d2)| d1.partial_cmp(d2).unwrap())
-    // {
-    //     println!("{p1:?} -> {p2:?} = {distance:.2}");
-    // }
-
     let mut last_connection = (Point::default(), Point::default());
 
     'outer: for (p1, p2, distance) in cloud
@@ -47,7 +31,7 @@ fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
         .map(|pair| {
             let p1 = pair.first().unwrap();
             let p2 = pair.last().unwrap();
-            (*p1, *p2, p1.distance(p2))
+            (*p1, *p2, p1.distance2(p2))
         })
         .sorted_by(|(_, _, d1), (_, _, d2)| d1.partial_cmp(d2).unwrap())
         .take(if config.max > 0 {
@@ -57,7 +41,10 @@ fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
         })
     {
         if circuits.len() == 1 && circuits[0].len() == cloud.points.len() {
-            println!("Finished! {last_connection:?} = {}", (last_connection.0.0 * last_connection.1.0));
+            println!(
+                "Part 2: {last_connection:?} = {}",
+                (last_connection.0.0 * last_connection.1.0)
+            );
             break;
         }
         last_connection = (p1.clone(), p2.clone());
@@ -69,7 +56,7 @@ fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
 
             if circuit.contains(p1) && circuit.contains(p2) {
                 println!(
-                    "Skipped edge because it is in circuit #{idx}: {p1:?} -> {p2:?} - len: {distance:.2}"
+                    "Skipped edge because it is in circuit #{idx}: {p1:?} -> {p2:?} - len: {distance}"
                 );
                 //println!("Grow junction box: {circuit:?}, {p1:?} {p2:?}");
                 continue 'outer;
@@ -78,7 +65,7 @@ fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
 
         if candidate_circuits.is_empty() {
             println!(
-                "New circuit #{}: {p1:?} -> {p2:?} - len: {distance:.2}",
+                "New circuit #{}: {p1:?} -> {p2:?} - len: {distance}",
                 circuits.len()
             );
             let mut junction = HashSet::new();
@@ -100,7 +87,7 @@ fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
         } else if candidate_circuits.len() == 1 {
             let mut iter = candidate_circuits.iter();
             let a_idx = iter.next().unwrap();
-            println!("Added to #{a_idx} circuit: {p1:?} -> {p2:?} - len: {distance:.2}");
+            println!("Added to #{a_idx} circuit: {p1:?} -> {p2:?} - len: {distance}");
             circuits[*a_idx].insert(p1.clone());
             circuits[*a_idx].insert(p2.clone());
             continue 'outer;
@@ -109,12 +96,11 @@ fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
         }
     }
 
-    let mut lengths: Vec<usize> = circuits.iter().map(|c| c.len()).collect();
-    lengths.sort_unstable_by(|a, b| b.cmp(a));
-    for l in &lengths {
-        println!("{l}");
+    if config.max > 0 {
+        let mut lengths: Vec<usize> = circuits.iter().map(|c| c.len()).collect();
+        lengths.sort_unstable_by(|a, b| b.cmp(a));
+        println!("Part 1: {}", lengths.iter().take(3).product::<usize>());
     }
-    println!("Part 1: {}", lengths.iter().take(3).product::<usize>());
 
     Ok(())
 }

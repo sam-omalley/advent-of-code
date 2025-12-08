@@ -38,11 +38,8 @@ impl Point {
         self.2 = val;
     }
 
-    pub fn distance(&self, other: &Point) -> f64 {
-        ((other.0 as f64 - self.0 as f64).powf(2.0)
-            + (other.1 as f64 - self.1 as f64).powf(2.0)
-            + (other.2 as f64 - self.2 as f64).powf(2.0))
-        .sqrt().abs()
+    pub fn distance2(&self, other: &Point) -> i64 {
+        (other.0 - self.0).pow(2) + (other.1 - self.1).pow(2) + (other.2 - self.2).pow(2)
     }
 }
 
@@ -86,7 +83,7 @@ mod tests {
 
     #[test]
     fn distance() {
-        let distance = Point(162,817,812).distance(&Point(425,690,689));
+        let distance = Point(162, 817, 812).distance(&Point(425, 690, 689));
         eprintln!("Distance: {distance}");
         assert!((distance - 316.902193).abs() < 0.000001);
     }
