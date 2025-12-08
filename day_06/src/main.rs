@@ -38,7 +38,6 @@ fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
     }
 
     let mut total_a = 0i64;
-    let mut total_b = 0i64;
     for (column, operation) in inputs.into_iter().zip(operations.iter()) {
         for val in &column {
             print!("{val} ")
