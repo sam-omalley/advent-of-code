@@ -1,7 +1,8 @@
 pub use petgraph::graph::{DiGraph, NodeIndex};
+pub use petgraph::visit::Topo;
 use std::collections::HashMap;
 
-pub fn parse_graph(value: &str) -> (DiGraph<String, ()>, NodeIndex, NodeIndex) {
+pub fn parse_graph(value: &str) -> (DiGraph<String, ()>, HashMap<String, NodeIndex>) {
     let mut graph = DiGraph::new();
 
     let mut lookup = HashMap::new();
@@ -29,11 +30,29 @@ pub fn parse_graph(value: &str) -> (DiGraph<String, ()>, NodeIndex, NodeIndex) {
         }
     }
 
+    (graph, lookup)
+}
 
-    let origin = lookup["you"];
-    let end = lookup["out"];
+pub fn count_paths_dag(g: &DiGraph<String, ()>, start: NodeIndex, end: NodeIndex) -> u64 {
+    let mut topo = Topo::new(&g);
+    let mut order = Vec::new();
+    while let Some(n) = topo.next(&g) {
+        order.push(n);
+    }
 
-    (graph, origin, end)
+    let mut dp = vec![0u64; g.node_count()];
+    dp[start.index()] = 1;
+
+    for &u in &order {
+        let ways = dp[u.index()];
+        if ways > 0 {
+            for v in g.neighbors(u) {
+                dp[v.index()] += ways;
+            }
+        }
+    }
+
+    dp[end.index()]
 }
 
 #[cfg(test)]
@@ -42,7 +61,7 @@ mod tests {
 
     #[test]
     fn parse() {
-        let (graph, origin, end) = parse_graph(
+        let (graph, lookup) = parse_graph(
             "\
 aaa: you hhh
 you: bbb ccc
@@ -57,11 +76,8 @@ iii: out
 ",
         );
 
-        eprintln!("{graph:?}");
-        eprintln!("{origin:?}");
-        eprintln!("{end:?}");
-
         assert_eq!(graph.node_count(), 11);
+        assert_eq!(graph.node_count(), lookup.len());
         assert_eq!(graph.edge_count(), 17);
     }
 }
