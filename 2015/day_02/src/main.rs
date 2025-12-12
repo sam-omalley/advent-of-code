@@ -12,20 +12,17 @@ fn main() -> Result<(), Box<dyn error::Error>> {
 fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
     let contents = fs::read_to_string(config.file_path)?;
 
-    let mut total = 0;
+    let mut paper = 0;
+    let mut ribbon = 0;
     for line in contents.lines() {
         if line.contains("x") {
-            let mut iter = line.split("x");
-
-            let l: i64= iter.next().unwrap().parse().unwrap();
-            let w: i64 = iter.next().unwrap().parse().unwrap();
-            let h: i64 = iter.next().unwrap().parse().unwrap();
-
-            total += (2 * l * w) + (2 * w * h) + (2 * h * l) + (l*w).min(w*h).min(h*l);
+            paper += calculate_paper(line);
+            ribbon += calculate_ribbon(line);
         }
     }
 
-    println!("Part 1: {total}");
+    println!("Part 1: {paper}");
+    println!("Part 1: {ribbon}");
 
     Ok(())
 }
