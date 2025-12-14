@@ -1,11 +1,35 @@
 aoc_2015::solution!(4);
 
-pub fn part_one(input: &str) -> Option<u64> {
-    None
+pub fn part_one(input: &str) -> Option<usize> {
+    Some(find_zero_prefix_md5_hash(input, check_digest_part_1))
 }
 
-pub fn part_two(input: &str) -> Option<u64> {
-    None
+pub fn part_two(input: &str) -> Option<usize> {
+    Some(find_zero_prefix_md5_hash(input, check_digest_part_2))
+}
+
+fn find_zero_prefix_md5_hash(input: &str, check: fn(&md5::Digest) -> bool) -> usize {
+    let mut counter = 0;
+    loop {
+        let digest = md5::compute((input.to_string() + &counter.to_string()).as_bytes());
+        if check(&digest) {
+            #[cfg(test)]
+            {
+                eprintln!("{input}{counter}: {:x}", digest);
+            }
+            break;
+        }
+        counter += 1;
+    }
+    counter
+}
+
+fn check_digest_part_1(digest: &md5::Digest) -> bool {
+    digest[0] | digest[1] | (digest[2] >> 4) == 0
+}
+
+fn check_digest_part_2(digest: &md5::Digest) -> bool {
+    digest[0] | digest[1] | digest[2] == 0
 }
 
 #[cfg(test)]
@@ -13,14 +37,9 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_part_one() {
-        let result = part_one(&advent_of_code::template::read_file("examples", DAY));
-        assert_eq!(result, None);
-    }
-
-    #[test]
-    fn test_part_two() {
-        let result = part_two(&advent_of_code::template::read_file("examples", DAY));
-        assert_eq!(result, None);
+    fn it_works() {
+        assert!(check_digest_part_1(&md5::compute("pqrstuv1048970")));
+        assert!(check_digest_part_1(&md5::compute("abcdef609043")));
+        assert_eq!(part_one("abcdef"), Some(609043));
     }
 }
