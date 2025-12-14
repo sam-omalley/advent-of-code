@@ -1,4 +1,4 @@
-advent_of_code::solution!(4);
+aoc_2025::solution!(4);
 
 pub fn part_one(input: &str) -> Option<u64> {
     let width = input.lines().next().unwrap().trim().len();
@@ -153,7 +153,7 @@ mod tests {
 
     #[test]
     fn map() {
-        let example = advent_of_code::template::read_file("examples", DAY);
+        let example = aoc_2025::template::read_file("examples", DAY);
 
         let result = part_one(&example);
         assert_eq!(result, Some(13));

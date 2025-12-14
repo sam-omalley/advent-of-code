@@ -1,4 +1,4 @@
-advent_of_code::solution!(3);
+aoc_2025::solution!(3);
 
 pub struct BatteryBank(Vec<u8>);
 

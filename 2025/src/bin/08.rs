@@ -1,4 +1,4 @@
-advent_of_code::solution!(8);
+aoc_2025::solution!(8);
 use itertools::Itertools;
 use std::collections::HashSet;
 use std::error::Error;
@@ -141,13 +141,13 @@ mod tests {
 
     #[test]
     fn test_part_one() {
-        let result = part_one(&advent_of_code::template::read_file("examples", DAY));
+        let result = part_one(&aoc_2025::template::read_file("examples", DAY));
         assert_eq!(result, Some(40));
     }
 
     #[test]
     fn test_part_two() {
-        let result = part_two(&advent_of_code::template::read_file("examples", DAY));
+        let result = part_two(&aoc_2025::template::read_file("examples", DAY));
         assert_eq!(result, Some(25272));
     }
 

@@ -1,4 +1,4 @@
-advent_of_code::solution!(7);
+aoc_2025::solution!(7);
 use std::collections::HashSet;
 
 pub fn part_one(input: &str) -> Option<u64> {
@@ -87,13 +87,13 @@ mod tests {
 
     #[test]
     fn test_part_one() {
-        let result = part_one(&advent_of_code::template::read_file("examples", DAY));
+        let result = part_one(&aoc_2025::template::read_file("examples", DAY));
         assert_eq!(result, Some(21));
     }
 
     #[test]
     fn test_part_two() {
-        let result = part_two(&advent_of_code::template::read_file("examples", DAY));
+        let result = part_two(&aoc_2025::template::read_file("examples", DAY));
         assert_eq!(result, Some(40));
     }
 }
