@@ -6,6 +6,6 @@ Solutions for [Advent of Code](https://adventofcode.com/) in [Rust](https://www.
 
 | Year                     | Stars        |
 | :---:                    | :---:        |
-| [2025](./2025/README.md) | 24⭐ / 24⭐ |
-| [2024](./2024/README.md) | 04⭐ / 50⭐ |
-| [2015](./2015/README.md) | 10⭐ / 50⭐ |
+| [2025](./2025/README.md) | 24/24 ⭐ |
+| [2024](./2024/README.md) | 04/50 ⭐ |
+| [2015](./2015/README.md) | 10/50 ⭐ |
