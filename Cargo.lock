@@ -36,6 +36,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "aoc_2015"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "dhat",
+ "pico-args",
+ "tinyjson",
+]
+
+[[package]]
 name = "aoc_2025"
 version = "0.1.0"
 dependencies = [
@@ -87,21 +97,6 @@ dependencies = [
  "shlex",
  "syn",
 ]
-
-[[package]]
-name = "bit-set"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "08807e080ed7f9d5433fa9b275196cfc35414f66a0c79d864dc51a0d825231a3"
-dependencies = [
- "bit-vec",
-]
-
-[[package]]
-name = "bit-vec"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5e764a1d40d510daf35e07be9eb06e75770908c27d411ee6c92109c9840eaaf7"
 
 [[package]]
 name = "bitflags"
@@ -175,49 +170,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
 
 [[package]]
-name = "day_01_2015"
-version = "0.1.0"
-dependencies = [
- "common",
-]
-
-[[package]]
 name = "day_01_2024"
 version = "0.1.0"
 
 [[package]]
-name = "day_02_2015"
-version = "0.1.0"
-dependencies = [
- "common",
-]
-
-[[package]]
 name = "day_02_2024"
 version = "0.1.0"
-
-[[package]]
-name = "day_03_2015"
-version = "0.1.0"
-dependencies = [
- "common",
-]
-
-[[package]]
-name = "day_04_2015"
-version = "0.1.0"
-dependencies = [
- "common",
- "md5",
-]
-
-[[package]]
-name = "day_05_2015"
-version = "0.1.0"
-dependencies = [
- "common",
- "fancy-regex",
-]
 
 [[package]]
 name = "dhat"
@@ -246,17 +204,6 @@ name = "equivalent"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "877a4ace8713b0bcf2a4e7eec82529c029f1d0619886d18145fea96c3ffe5c0f"
-
-[[package]]
-name = "fancy-regex"
-version = "0.17.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "72cf461f865c862bb7dc573f643dd6a2b6842f7c30b07882b56bd148cc2761b8"
-dependencies = [
- "bit-set",
- "regex-automata",
- "regex-syntax",
-]
 
 [[package]]
 name = "find-msvc-tools"
@@ -413,12 +360,6 @@ name = "log"
 version = "0.4.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5e5032e24019045c762d3c0f28f5b6b8bbf38563a65908389bf7978758920897"
-
-[[package]]
-name = "md5"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ae960838283323069879657ca3de837e9f7bbb4c7bf6ea7f1b290d5e9476d2e0"
 
 [[package]]
 name = "memchr"
