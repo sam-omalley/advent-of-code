@@ -1,13 +1,13 @@
-use advent_of_code::template::commands::{all, download, read, scaffold, solve, time};
+use aoc_2025::template::commands::{all, download, read, scaffold, solve, time};
 use args::{AppArguments, parse};
 
 #[cfg(feature = "today")]
-use advent_of_code::template::Day;
+use aoc_2025::template::Day;
 #[cfg(feature = "today")]
 use std::process;
 
 mod args {
-    use advent_of_code::template::Day;
+    use aoc_2025::template::Day;
     use std::process;
 
     pub enum AppArguments {

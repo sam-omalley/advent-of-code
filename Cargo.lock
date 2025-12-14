@@ -18,20 +18,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "320119579fcad9c21884f5c4861d16174d0e06250625266f50fe6898340abefa"
 
 [[package]]
-name = "advent_of_code"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "dhat",
- "ilog",
- "itertools 0.14.0",
- "petgraph",
- "pico-args",
- "tinyjson",
- "z3",
-]
-
-[[package]]
 name = "aho-corasick"
 version = "1.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -47,6 +33,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "819e7219dbd41043ac279b19830f2efc897156490d7fd6ea916720117ee66311"
 dependencies = [
  "libc",
+]
+
+[[package]]
+name = "aoc_2025"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "dhat",
+ "ilog",
+ "itertools 0.14.0",
+ "petgraph",
+ "pico-args",
+ "tinyjson",
+ "z3",
 ]
 
 [[package]]

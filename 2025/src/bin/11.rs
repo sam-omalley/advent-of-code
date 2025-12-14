@@ -1,4 +1,4 @@
-advent_of_code::solution!(11);
+aoc_2025::solution!(11);
 use petgraph::algo;
 use petgraph::graph::{DiGraph, NodeIndex};
 use petgraph::visit::Topo;
@@ -94,7 +94,7 @@ mod tests {
 
     #[test]
     fn test_part_one() {
-        let result = part_one(&advent_of_code::template::read_file_part(
+        let result = part_one(&aoc_2025::template::read_file_part(
             "examples", DAY, 1,
         ));
         assert_eq!(result, Some(5));
@@ -102,7 +102,7 @@ mod tests {
 
     #[test]
     fn test_part_two() {
-        let result = part_two(&advent_of_code::template::read_file_part(
+        let result = part_two(&aoc_2025::template::read_file_part(
             "examples", DAY, 2,
         ));
         assert_eq!(result, Some(2));

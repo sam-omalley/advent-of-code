@@ -1,4 +1,4 @@
-advent_of_code::solution!(12);
+aoc_2025::solution!(12);
 
 pub fn part_one(input: &str) -> Option<u64> {
     let mut shape = Vec::new();
@@ -167,7 +167,7 @@ mod tests {
 
     #[test]
     fn test_part_one() {
-        let _result = part_one(&advent_of_code::template::read_file("examples", DAY));
+        let _result = part_one(&aoc_2025::template::read_file("examples", DAY));
 
         // Note: This solution fails the examples but passes the actual puzzle.
         // Eventually I'd like to come back and create a general solver.

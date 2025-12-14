@@ -1,4 +1,4 @@
-advent_of_code::solution!(2);
+aoc_2025::solution!(2);
 use ilog::IntLog;
 
 pub fn check_naughty_patterns(value: &str) -> bool {
