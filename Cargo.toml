@@ -1,9 +1,27 @@
-[workspace]
-resolver = "3"
+[package]
+name = "aoc"
+version = "0.1.0"
+authors = ["Samuel O'Malley <git@sam.omalley.cc>"]
+edition = "2024"
+default-run = "aoc"
+publish = false
 
-members = [
-    "common",
-    "2015",
-    "2024",
-    "2025",
-]
+[lib]
+doctest = false
+
+[features]
+test_lib = []
+
+[dependencies]
+
+# Template dependencies
+pico-args = "0.5.0"
+tinyjson = "2.5.1"
+
+# Solution dependencies
+ilog = "1.0.1"
+itertools = "0.14.0"
+z3 = "0.19.5"
+petgraph = "0.8.3"
+md5 = "0.8.0"
+fancy-regex = "0.17.0"
