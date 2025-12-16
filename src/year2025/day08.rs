@@ -2,26 +2,27 @@ use itertools::Itertools;
 use std::collections::HashSet;
 use std::error::Error;
 
-pub fn part_one(input: &str) -> Option<u64> {
+pub type Input = PointCloud;
+
+pub fn parse(input: &str) -> Input {
     let mut cloud = PointCloud::default();
     for line in input.lines() {
         cloud.add_str(line).unwrap();
     }
 
+    cloud
+}
+
+pub fn part1(cloud: &Input) -> u64 {
     let iterations = if cfg!(test) { 10 } else { 1000 };
-    solve(cloud, iterations)
+    solve(cloud, iterations).expect("Expected result")
 }
 
-pub fn part_two(input: &str) -> Option<u64> {
-    let mut cloud = PointCloud::default();
-    for line in input.lines() {
-        cloud.add_str(line).unwrap();
-    }
-
-    solve(cloud, 0)
+pub fn part2(cloud: &Input) -> u64 {
+    solve(cloud, 0).expect("Expected result")
 }
 
-pub fn solve(cloud: PointCloud, max_connections: usize) -> Option<u64> {
+pub fn solve(cloud: &PointCloud, max_connections: usize) -> Option<u64> {
     let mut circuits = Vec::<HashSet<Point>>::default();
     let mut last_connection = (Point::default(), Point::default());
 
@@ -137,17 +138,22 @@ impl Point {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::*;
 
     #[test]
     fn test_part_one() {
-        let result = part_one(&aoc_2025::template::read_file("examples", DAY));
-        assert_eq!(result, Some(40));
+        let result = part1(&parse(&template::read_file(
+            "examples",
+            year!(2025),
+            day!(8),
+        )));
+        assert_eq!(result, 40);
     }
 
     #[test]
     fn test_part_two() {
-        let result = part_two(&aoc_2025::template::read_file("examples", DAY));
-        assert_eq!(result, Some(25272));
+        let result = part2(&parse(&template::read_file("examples", year!(2025), day!(8))));
+        assert_eq!(result, 25272);
     }
 
     #[test]

@@ -12,11 +12,6 @@
                 "args": [
                     "test",
                     "--no-run",
-                    // replace with binary name (e.g. "01") here if you always
-                    // want to debug one file regardless of the active file in
-                    // the editor.
-                    "--bin=${fileBasenameNoExtension}",
-                    "--package=advent_of_code"
                 ],
             },
             "args": [],
@@ -29,11 +24,6 @@
             "cargo": {
                 "args": [
                     "build",
-                    // replace with binary name (e.g. "01") here if you always
-                    // want to debug one file regardless of the active file in
-                    // the editor
-                    "--bin=${fileBasenameNoExtension}",
-                    "--package=advent_of_code"
                 ],
             },
             "cwd": "${workspaceFolder}"
@@ -41,17 +31,16 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in library 'advent_of_code'",
+            "name": "Debug unit tests in library 'aoc'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
                     "--lib",
                     "--features=test_lib",
-                    "--package=advent_of_code"
                 ],
                 "filter": {
-                    "name": "advent_of_code",
+                    "name": "aoc",
                     "kind": "lib"
                 }
             },

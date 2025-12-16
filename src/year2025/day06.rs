@@ -1,6 +1,12 @@
 use std::str::FromStr;
 
-pub fn part_one(input: &str) -> Option<u64> {
+pub type Input<'a> = &'a str;
+
+pub fn parse(input: &str) -> &str {
+    input
+}
+
+pub fn part1(input: &Input) -> u64 {
     let mut inputs = Vec::<Vec<&str>>::new();
     let num_problems = input
         .lines()
@@ -30,10 +36,10 @@ pub fn part_one(input: &str) -> Option<u64> {
         total += res;
     }
 
-    Some(total)
+    total
 }
 
-pub fn part_two(input: &str) -> Option<u64> {
+pub fn part2(input: &Input) -> u64 {
     let num_chars = input.lines().next().unwrap().chars().count();
     let num_lines = input.lines().count();
 
@@ -82,7 +88,7 @@ pub fn part_two(input: &str) -> Option<u64> {
     let res = operation.apply(values);
     total += res;
 
-    Some(total)
+    total
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -120,16 +126,17 @@ impl FromStr for Operations {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::*;
 
     #[test]
     fn test_part_one() {
-        let result = part_one(&aoc_2025::template::read_file("examples", DAY));
-        assert_eq!(result, Some(4277556));
+        let result = part1(&parse(&template::read_file("examples", year!(2025), day!(6))));
+        assert_eq!(result, 4277556);
     }
 
     #[test]
     fn test_part_two() {
-        let result = part_two(&aoc_2025::template::read_file("examples", DAY));
-        assert_eq!(result, Some(3263827));
+        let result = part2(&parse(&template::read_file("examples", year!(2025), day!(6))));
+        assert_eq!(result, 3263827);
     }
 }

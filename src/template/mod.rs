@@ -20,8 +20,8 @@ pub fn read_file(folder: &str, year: Year, day: Day) -> String {
     let filepath = cwd
         .join("data")
         .join(folder)
-        .join(format!("{year}"))
-        .join(format!("{day}.txt"));
+        .join(format!("year{year}"))
+        .join(format!("day{day}.txt"));
     let f = fs::read_to_string(filepath);
     f.expect("could not open input file")
 }
@@ -33,8 +33,8 @@ pub fn read_file_part(folder: &str, year: Year, day: Day, part: u8) -> String {
     let filepath = cwd
         .join("data")
         .join(folder)
-        .join(format!("{year}"))
-        .join(format!("{day}-{part}.txt"));
+        .join(format!("year{year}"))
+        .join(format!("day{day}-{part}.txt"));
     let f = fs::read_to_string(filepath);
     f.expect("could not open input file")
 }

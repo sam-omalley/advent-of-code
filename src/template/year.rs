@@ -63,3 +63,13 @@ impl Display for YearFromStrError {
         f.write_str("expecting a year >= 2015")
     }
 }
+
+/* -------------------------------------------------------------------------- */
+
+/// Creates a [`Year`] value in a const context.
+#[macro_export]
+macro_rules! year {
+    ($year:expr) => {
+        const { $crate::template::Year::new($year).expect("invalid year number") }
+    };
+}

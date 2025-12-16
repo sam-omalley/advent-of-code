@@ -1,9 +1,13 @@
 use itertools::Itertools;
 use std::error::Error;
 
-pub fn part_one(input: &str) -> Option<u64> {
-    let tiles = Tiles::parse(input).unwrap();
+pub type Input = Tiles;
 
+pub fn parse(input: &str) -> Input {
+    Tiles::parse(input).unwrap()
+}
+
+pub fn part1(tiles: &Input) -> u64 {
     let mut smallest_p = Point::new(i64::MAX, i64::MAX);
     let mut biggest_p = Point::new(i64::MIN, i64::MIN);
 
@@ -20,12 +24,10 @@ pub fn part_one(input: &str) -> Option<u64> {
         .collect();
     rectangles.sort_by_key(|r| r.area());
 
-    Some(rectangles.iter().last().unwrap().area() as u64)
+    rectangles.iter().last().unwrap().area() as u64
 }
 
-pub fn part_two(input: &str) -> Option<u64> {
-    let tiles = Tiles::parse(input).unwrap();
-
+pub fn part2(tiles: &Input) -> u64 {
     let mut rectangles: Vec<Rectangle> = tiles
         .tiles
         .iter()
@@ -46,9 +48,9 @@ pub fn part_two(input: &str) -> Option<u64> {
             }
         }
 
-        return Some(r.area() as u64);
+        return r.area() as u64;
     }
-    None
+    0
 }
 
 #[derive(Clone, Default, Debug)]
@@ -173,17 +175,18 @@ impl Rectangle {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::*;
 
     #[test]
     fn test_part_one() {
-        let result = part_one(&aoc_2025::template::read_file("examples", DAY));
-        assert_eq!(result, Some(50));
+        let result = part1(&parse(&template::read_file("examples", year!(2025), day!(9))));
+        assert_eq!(result, 50);
     }
 
     #[test]
     fn test_part_two() {
-        let result = part_two(&aoc_2025::template::read_file("examples", DAY));
-        assert_eq!(result, Some(24));
+        let result = part2(&parse(&template::read_file("examples", year!(2025), day!(9))));
+        assert_eq!(result, 24);
     }
 
     #[test]
