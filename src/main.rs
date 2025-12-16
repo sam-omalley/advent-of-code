@@ -102,10 +102,7 @@ fn main() {
                     download::handle(year, day);
                 }
             }
-            AppArguments::Solve {
-                year,
-                day,
-            } => {
+            AppArguments::Solve { year, day } => {
                 // Run selected solutions.
                 let (stars, duration) = solutions
                     .iter()
@@ -158,7 +155,6 @@ macro_rules! run {
                     year: stringify!($year).strip_prefix("year").unwrap().parse().unwrap(),
                     day: stringify!($day).strip_prefix("day").unwrap().parse().unwrap(),
                     wrapper: |data: &str| {
-                        #[warn(unused_imports)]
                         use aoc::$year::$day::*;
 
                         let input = parse(data);

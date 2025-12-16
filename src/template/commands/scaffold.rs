@@ -1,11 +1,11 @@
 use std::{
     fs::{File, OpenOptions, create_dir_all},
-    path::Path,
     io::Write,
+    path::Path,
     process,
 };
 
-use crate::template::{Year, Day};
+use crate::template::{Day, Year};
 
 const MODULE_TEMPLATE: &str =
     include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/src/template.txt"));

@@ -1,6 +1,6 @@
 use std::process;
 
-use crate::template::{Year, Day, aoc_cli};
+use crate::template::{Day, Year, aoc_cli};
 
 pub fn handle(year: Year, day: Day) {
     if aoc_cli::check().is_err() {
