@@ -1,13 +1,17 @@
 use std::collections::HashSet;
 
-pub fn part_one(input: &str) -> Option<u64> {
-    let manifold = Manifold::parse(input);
-    Some(manifold.get_num_splits())
+pub type Input = Manifold;
+
+pub fn parse(input: &str) -> Input {
+    Manifold::parse(input)
 }
 
-pub fn part_two(input: &str) -> Option<u64> {
-    let manifold = Manifold::parse(input);
-    Some(manifold.get_num_timelines())
+pub fn part1(manifold: &Input) -> u64 {
+    manifold.get_num_splits()
+}
+
+pub fn part2(manifold: &Input) -> u64 {
+    manifold.get_num_timelines()
 }
 
 #[derive(Default)]
@@ -83,16 +87,25 @@ impl Manifold {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::*;
 
     #[test]
     fn test_part_one() {
-        let result = part_one(&aoc_2025::template::read_file("examples", DAY));
-        assert_eq!(result, Some(21));
+        let result = part1(&parse(&template::read_file(
+            "examples",
+            year!(2025),
+            day!(7),
+        )));
+        assert_eq!(result, 21);
     }
 
     #[test]
     fn test_part_two() {
-        let result = part_two(&aoc_2025::template::read_file("examples", DAY));
-        assert_eq!(result, Some(40));
+        let result = part2(&parse(&template::read_file(
+            "examples",
+            year!(2025),
+            day!(7),
+        )));
+        assert_eq!(result, 40);
     }
 }

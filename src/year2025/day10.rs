@@ -2,7 +2,13 @@ use itertools::Itertools;
 use std::fmt;
 use z3::{Optimize, SatResult, ast::Int};
 
-pub fn part_one(input: &str) -> Option<u64> {
+pub type Input<'a> = &'a str;
+
+pub fn parse(input: &str) -> &str {
+    input
+}
+
+pub fn part1(input: &Input) -> u64 {
     let mut counter = 0;
     for line in input.lines().map(str::trim) {
         let mut tokens = line.split_whitespace();
@@ -36,17 +42,17 @@ pub fn part_one(input: &str) -> Option<u64> {
         }
     }
 
-    Some(counter)
+    counter
 }
 
-pub fn part_two(input: &str) -> Option<u64> {
+pub fn part2(input: &Input) -> u64 {
     let mut total = 0;
     for line in input.lines().map(str::trim) {
         let machine = Machine::parse(line);
         total += machine.solve();
     }
 
-    Some(total)
+    total
 }
 
 #[derive(Default, Clone, Copy)]
@@ -201,16 +207,25 @@ impl Machine {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::*;
 
     #[test]
     fn test_part_one() {
-        let result = part_one(&aoc_2025::template::read_file("examples", DAY));
-        assert_eq!(result, Some(7));
+        let result = part1(&parse(&template::read_file(
+            "examples",
+            year!(2025),
+            day!(10),
+        )));
+        assert_eq!(result, 7);
     }
 
     #[test]
     fn test_part_two() {
-        let result = part_two(&aoc_2025::template::read_file("examples", DAY));
-        assert_eq!(result, Some(33));
+        let result = part2(&parse(&template::read_file(
+            "examples",
+            year!(2025),
+            day!(10),
+        )));
+        assert_eq!(result, 33);
     }
 }

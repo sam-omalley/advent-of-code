@@ -1,4 +1,9 @@
-pub fn part_one(input: &str) -> Option<u64> {
+pub struct Input {
+    pub shapes: Vec<Shape>,
+    pub spaces: Vec<Space>,
+}
+
+pub fn parse(input: &str) -> Input {
     let mut shape = Vec::new();
     let mut shapes = Vec::new();
     let mut spaces = Vec::new();
@@ -21,14 +26,18 @@ pub fn part_one(input: &str) -> Option<u64> {
         println!();
     }
 
+    Input { shapes, spaces }
+}
+
+pub fn part1(input: &Input) -> u64 {
     let mut easy_fit = 0;
     #[allow(unused_variables)]
     let mut easy_reject = 0;
     #[allow(unused_variables)]
     let mut other = 0;
 
-    for space in spaces {
-        let (min, max) = space.get_bounds(&shapes);
+    for space in &input.spaces {
+        let (min, max) = space.get_bounds(&input.shapes);
 
         #[cfg(test)]
         {
@@ -58,11 +67,11 @@ pub fn part_one(input: &str) -> Option<u64> {
         println!(" - Other: {other}");
     }
 
-    Some(easy_fit)
+    easy_fit
 }
 
-pub fn part_two(_input: &str) -> Option<u64> {
-    Some(0)
+pub fn part2(_input: &Input) -> u64 {
+    0
 }
 
 #[derive(Copy, Clone, Debug, Default)]
@@ -156,19 +165,5 @@ impl std::fmt::Display for Space {
             }
         }
         Ok(())
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_part_one() {
-        let _result = part_one(&aoc_2025::template::read_file("examples", DAY));
-
-        // Note: This solution fails the examples but passes the actual puzzle.
-        // Eventually I'd like to come back and create a general solver.
-        //assert_eq!(_result, Some(2));
     }
 }

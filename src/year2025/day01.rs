@@ -102,7 +102,7 @@ mod tests {
 
     #[test]
     fn test_script() {
-        let input = "
+        let input = parse("
             L68
             L30
             R48
@@ -112,11 +112,10 @@ mod tests {
             L1
             L99
             R14
-            L82";
+            L82");
 
-        let (password, num_spins) = get_password(input);
-        assert_eq!(3, password);
-        assert_eq!(6, num_spins);
+        assert_eq!(3, part1(&input));
+        assert_eq!(6, part2(&input));
     }
 
     #[test]

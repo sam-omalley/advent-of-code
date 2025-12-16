@@ -1,6 +1,9 @@
+use itertools::Itertools;
 use std::ops::RangeInclusive;
 
-pub fn part_one(input: &str) -> Option<u64> {
+pub type Input = (Vec<RangeInclusive<u64>>, Vec<u64>);
+
+pub fn parse(input: &str) -> Input {
     let mut values = Vec::<u64>::new();
     let mut intervals = Vec::<RangeInclusive<u64>>::new();
     for line in input.lines().map(|x| x.trim()).filter(|x| !x.is_empty()) {
@@ -20,49 +23,26 @@ pub fn part_one(input: &str) -> Option<u64> {
         }
     }
 
-    let intervals = squash_intervals(intervals);
-    let count = count_members(&intervals, &values);
-
-    Some(count)
+    (squash_intervals(&intervals), values)
 }
 
-pub fn part_two(input: &str) -> Option<u64> {
-    let mut values = Vec::<u64>::new();
-    let mut intervals = Vec::<RangeInclusive<u64>>::new();
-    for line in input.lines().map(|x| x.trim()).filter(|x| !x.is_empty()) {
-        let mut iter = line.split("-");
-
-        let first: u64 = iter.next().unwrap().parse().unwrap();
-        let second = iter.next();
-
-        match second {
-            Some(val) => {
-                let end: u64 = val.parse().unwrap();
-                intervals.push(first..=end);
-            }
-            None => {
-                values.push(first);
-            }
-        }
-    }
-
-    let intervals = squash_intervals(intervals);
-    let possible = count_possible_intervals(&intervals);
-
-    Some(possible)
+pub fn part1(input: &Input) -> u64 {
+    count_members(&input.0, &input.1)
 }
 
-pub fn squash_intervals(mut intervals: Vec<RangeInclusive<u64>>) -> Vec<RangeInclusive<u64>> {
-    intervals.sort_by_key(|x| *x.start());
+pub fn part2(input: &Input) -> u64 {
+    count_possible_intervals(&input.0)
+}
 
+pub fn squash_intervals(intervals: &[RangeInclusive<u64>]) -> Vec<RangeInclusive<u64>> {
     let mut squashed = Vec::<RangeInclusive<u64>>::new();
-    for interval in intervals {
+    for interval in intervals.iter().sorted_by_key(|x| *x.start()) {
         if let Some(last_interval) = squashed.last_mut()
-            && is_overlapping(&interval, last_interval)
+            && is_overlapping(interval, last_interval)
         {
             *last_interval = *last_interval.start()..=*interval.end().max(last_interval.end());
         } else {
-            squashed.push(interval);
+            squashed.push(interval.clone());
         }
     }
 
@@ -100,28 +80,28 @@ pub fn count_possible_intervals(intervals: &Vec<RangeInclusive<u64>>) -> u64 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::*;
 
     #[test]
     fn test_part_one() {
-        let result = part_one(&aoc_2025::template::read_file("examples", DAY));
-        assert_eq!(result, Some(3));
+        let input = parse(&template::read_file("examples", year!(2025), day!(5)));
+        let result = part1(&input);
+        assert_eq!(result, 3);
     }
 
     #[test]
     fn test_part_two() {
-        let result = part_two(&aoc_2025::template::read_file("examples", DAY));
-        assert_eq!(result, Some(14));
+        let input = parse(&template::read_file("examples", year!(2025), day!(5)));
+        let result = part2(&input);
+        assert_eq!(result, 14);
     }
 
     #[test]
     fn interval_squashing() {
         let intervals = vec![1..=5, 7..=10];
         let overlapping_intervals = vec![3..=8, 1..=5, 7..=10];
-        assert_eq!(intervals, squash_intervals(intervals.clone()));
-        assert_eq!(
-            vec![1..=10],
-            squash_intervals(overlapping_intervals.clone())
-        );
+        assert_eq!(intervals, squash_intervals(&intervals));
+        assert_eq!(vec![1..=10], squash_intervals(&overlapping_intervals));
     }
 
     #[test]
@@ -130,6 +110,6 @@ mod tests {
         let values = vec![1, 5, 8, 11, 17, 32];
 
         assert_eq!(count_members(&intervals, &values), 3);
-        assert_eq!(count_possible_intervals(&squash_intervals(intervals)), 14);
+        assert_eq!(count_possible_intervals(&squash_intervals(&intervals)), 14);
     }
 }

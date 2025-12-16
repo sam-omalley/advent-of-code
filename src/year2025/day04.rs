@@ -1,23 +1,20 @@
-pub fn part_one(input: &str) -> Option<u64> {
+pub type Input = Map;
+
+pub fn parse(input: &str) -> Input {
     let width = input.lines().next().unwrap().trim().len();
 
-    let grid = Map::new(
+    Map::new(
         width,
         input.lines().map(|x| x.trim()).filter(|x| !x.is_empty()),
-    );
-
-    Some(grid.get_rolls())
+    )
 }
 
-pub fn part_two(input: &str) -> Option<u64> {
-    let width = input.lines().next().unwrap().trim().len();
+pub fn part1(grid: &Input) -> u64 {
+    grid.get_rolls()
+}
 
-    let grid = Map::new(
-        width,
-        input.lines().map(|x| x.trim()).filter(|x| !x.is_empty()),
-    );
-
-    Some(grid.get_rolls_exhaustive())
+pub fn part2(grid: &Input) -> u64 {
+    grid.get_rolls_exhaustive()
 }
 
 #[derive(Clone)]
@@ -148,19 +145,13 @@ impl Map {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::*;
 
     #[test]
     fn map() {
-        let example = aoc_2025::template::read_file("examples", DAY);
+        let map = parse(&template::read_file("examples", year!(2025), day!(4)));
+        assert_eq!(part1(&map), 13);
 
-        let result = part_one(&example);
-        assert_eq!(result, Some(13));
-
-        let width = example.lines().next().unwrap().trim().len();
-        let map = Map::new(
-            width,
-            example.lines().map(|x| x.trim()).filter(|x| !x.is_empty()),
-        );
         assert_eq!(map.get(0, 0), 0);
         assert_eq!(map.get(7, 0), 0);
         assert_eq!(map.get(2, 1), 0);
