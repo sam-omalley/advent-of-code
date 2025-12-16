@@ -70,8 +70,8 @@ pub fn part1(input: &Input) -> u64 {
     easy_fit
 }
 
-pub fn part2(_input: &Input) -> u64 {
-    0
+pub fn part2(_input: &Input) -> &'static str {
+    "n/a"
 }
 
 #[derive(Copy, Clone, Debug, Default)]
