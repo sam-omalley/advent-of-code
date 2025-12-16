@@ -1,6 +1,8 @@
-aoc_2015::solution!(1);
+pub fn parse(input: &str) -> &str {
+    input
+}
 
-pub fn part_one(input: &str) -> Option<i64> {
+pub fn part1(input: &str) -> i64 {
     let mut counter = 0;
     for char in input.trim().chars() {
         counter += if char == '(' {
@@ -12,10 +14,10 @@ pub fn part_one(input: &str) -> Option<i64> {
         };
     }
 
-    Some(counter)
+    counter
 }
 
-pub fn part_two(input: &str) -> Option<u64> {
+pub fn part2(input: &str) -> u64 {
     let mut counter: i64 = 0;
     for (idx, char) in input.trim().chars().enumerate() {
         counter += if char == '(' {
@@ -27,11 +29,11 @@ pub fn part_two(input: &str) -> Option<u64> {
         };
 
         if counter == -1 {
-            return Some(idx as u64 + 1);
+            return idx as u64 + 1;
         }
     }
 
-    None
+    0
 }
 
 #[cfg(test)]
@@ -40,17 +42,17 @@ mod tests {
 
     #[test]
     fn floors() {
-        assert_eq!(part_one("(())"), Some(0));
-        assert_eq!(part_one("()()"), Some(0));
-        assert_eq!(part_one("((("), Some(3));
-        assert_eq!(part_one("(()(()("), Some(3));
-        assert_eq!(part_one("))((((("), Some(3));
-        assert_eq!(part_one("())"), Some(-1));
-        assert_eq!(part_one("))("), Some(-1));
-        assert_eq!(part_one(")))"), Some(-3));
-        assert_eq!(part_one(")())())"), Some(-3));
+        assert_eq!(part1("(())"), 0);
+        assert_eq!(part1("()()"), 0);
+        assert_eq!(part1("((("), 3);
+        assert_eq!(part1("(()(()("), 3);
+        assert_eq!(part1("))((((("), 3);
+        assert_eq!(part1("())"), -1);
+        assert_eq!(part1("))("), -1);
+        assert_eq!(part1(")))"), -3);
+        assert_eq!(part1(")())())"), -3);
 
-        assert_eq!(part_two(")"), Some(1));
-        assert_eq!(part_two("()())"), Some(5));
+        assert_eq!(part2(")"), 1);
+        assert_eq!(part2("()())"), 5);
     }
 }

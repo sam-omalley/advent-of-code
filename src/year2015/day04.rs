@@ -1,11 +1,13 @@
-aoc_2015::solution!(4);
-
-pub fn part_one(input: &str) -> Option<usize> {
-    Some(find_zero_prefix_md5_hash(input, check_digest_part_1))
+pub fn parse(input: &str) -> &str {
+    input
 }
 
-pub fn part_two(input: &str) -> Option<usize> {
-    Some(find_zero_prefix_md5_hash(input, check_digest_part_2))
+pub fn part1(input: &str) -> usize {
+    find_zero_prefix_md5_hash(input, check_digest_part_1)
+}
+
+pub fn part2(input: &str) -> usize {
+    find_zero_prefix_md5_hash(input, check_digest_part_2)
 }
 
 fn find_zero_prefix_md5_hash(input: &str, check: fn(&md5::Digest) -> bool) -> usize {
@@ -40,6 +42,6 @@ mod tests {
     fn it_works() {
         assert!(check_digest_part_1(&md5::compute("pqrstuv1048970")));
         assert!(check_digest_part_1(&md5::compute("abcdef609043")));
-        assert_eq!(part_one("abcdef"), Some(609043));
+        assert_eq!(part1("abcdef"), 609043);
     }
 }
