@@ -79,7 +79,7 @@ fn main() {
     // Build list of all solutions.
     let solutions = [
         //year2015(),
-        //year2024(),
+        year2024(),
         year2025(),
     ];
 
@@ -173,9 +173,9 @@ macro_rules! run {
 //day01, day02, day03, day04, day05
 //);
 
-//run!(year2024
-//day01, day02
-//);
+run!(year2024
+    day01, day02
+);
 
 run!(year2025
     day01, day02, day03, day04, day05, day06, day07, day08, day09, day10, day11, day12
