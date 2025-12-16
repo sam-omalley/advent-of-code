@@ -1,13 +1,10 @@
-aoc_2015::solution!(3);
 use std::collections::HashMap;
 use std::ops::{Add, AddAssign};
 
-pub fn part_one(input: &str) -> Option<u64> {
-    let mut visited_count = HashMap::<Vec2, usize>::new();
+pub type Input = Vec<Vec2>;
 
-    let mut position = Vec2::default();
-    *visited_count.entry(position).or_default() += 1;
-
+pub fn parse(input: &str) -> Input {
+    let mut directions = Vec::default();
     for char in input.trim().chars() {
         let direction = match char {
             '^' => Vec2(0, 1),
@@ -17,14 +14,27 @@ pub fn part_one(input: &str) -> Option<u64> {
             _ => continue,
         };
 
-        position += direction;
+        directions.push(direction);
+    }
+
+    directions
+}
+
+pub fn part1(directions: &Input) -> u64 {
+    let mut visited_count = HashMap::<Vec2, usize>::new();
+
+    let mut position = Vec2::default();
+    *visited_count.entry(position).or_default() += 1;
+
+    for direction in directions {
+        position += *direction;
         *visited_count.entry(position).or_default() += 1;
     }
 
-    Some(visited_count.len() as u64)
+    visited_count.len() as u64
 }
 
-pub fn part_two(input: &str) -> Option<u64> {
+pub fn part2(directions: &Input) -> u64 {
     let mut visited_count = HashMap::<Vec2, usize>::new();
 
     let mut santa_position = Vec2::default();
@@ -33,25 +43,17 @@ pub fn part_two(input: &str) -> Option<u64> {
     let mut robo_position = Vec2::default();
     *visited_count.entry(robo_position).or_default() += 1;
 
-    for (idx, char) in input.trim().chars().enumerate() {
-        let direction = match char {
-            '^' => Vec2(0, 1),
-            '>' => Vec2(1, 0),
-            'v' => Vec2(0, -1),
-            '<' => Vec2(-1, 0),
-            _ => continue,
-        };
-
+    for (idx, direction) in directions.iter().enumerate() {
         if idx % 2 == 0 {
-            santa_position += direction;
+            santa_position += *direction;
             *visited_count.entry(santa_position).or_default() += 1;
         } else {
-            robo_position += direction;
+            robo_position += *direction;
             *visited_count.entry(robo_position).or_default() += 1;
         }
     }
 
-    Some(visited_count.len() as u64)
+    visited_count.len() as u64
 }
 
 #[derive(Default, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -77,16 +79,16 @@ mod tests {
 
     #[test]
     fn test_part_one() {
-        assert_eq!(part_one("^v"), Some(2));
-        assert_eq!(part_one(">"), Some(2));
-        assert_eq!(part_one("^>v<"), Some(4));
-        assert_eq!(part_one("^v^v^v^v^v"), Some(2));
+        assert_eq!(part1(&parse("^v")), 2);
+        assert_eq!(part1(&parse(">")), 2);
+        assert_eq!(part1(&parse("^>v<")), 4);
+        assert_eq!(part1(&parse("^v^v^v^v^v")), 2);
     }
 
     #[test]
     fn test_part_two() {
-        assert_eq!(part_two("^v"), Some(3));
-        assert_eq!(part_two("^>v<"), Some(3));
-        assert_eq!(part_two("^v^v^v^v^v"), Some(11));
+        assert_eq!(part2(&parse("^v")), 3);
+        assert_eq!(part2(&parse("^>v<")), 3);
+        assert_eq!(part2(&parse("^v^v^v^v^v")), 11);
     }
 }

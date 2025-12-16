@@ -1,6 +1,8 @@
-aoc_2015::solution!(2);
+pub fn parse(input: &str) -> &str {
+    input
+}
 
-pub fn part_one(input: &str) -> Option<u64> {
+pub fn part1(input: &str) -> u64 {
     let mut paper = 0;
     for line in input.lines() {
         if line.contains("x") {
@@ -8,10 +10,10 @@ pub fn part_one(input: &str) -> Option<u64> {
         }
     }
 
-    Some(paper)
+    paper
 }
 
-pub fn part_two(input: &str) -> Option<u64> {
+pub fn part2(input: &str) -> u64 {
     let mut ribbon = 0;
     for line in input.lines() {
         if line.contains("x") {
@@ -19,7 +21,7 @@ pub fn part_two(input: &str) -> Option<u64> {
         }
     }
 
-    Some(ribbon)
+    ribbon
 }
 
 pub fn calculate_paper(s: &str) -> u64 {
@@ -48,13 +50,13 @@ mod tests {
 
     #[test]
     fn test_part_one() {
-        assert_eq!(part_one("2x3x4"), Some(58));
-        assert_eq!(part_one("1x1x10"), Some(43));
+        assert_eq!(part1("2x3x4"), 58);
+        assert_eq!(part1("1x1x10"), 43);
     }
 
     #[test]
     fn test_part_two() {
-        assert_eq!(part_two("2x3x4"), Some(34));
-        assert_eq!(part_two("1x1x10"), Some(14));
+        assert_eq!(part2("2x3x4"), 34);
+        assert_eq!(part2("1x1x10"), 14);
     }
 }

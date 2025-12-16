@@ -1,7 +1,10 @@
-aoc_2015::solution!(5);
 use fancy_regex::Regex;
 
-pub fn part_one(input: &str) -> Option<u64> {
+pub fn parse(input: &str) -> &str {
+    input
+}
+
+pub fn part1(input: &str) -> u64 {
     let mut counter = 0;
     for line in input.lines() {
         let line = line.trim();
@@ -11,10 +14,10 @@ pub fn part_one(input: &str) -> Option<u64> {
         }
     }
 
-    Some(counter)
+    counter
 }
 
-pub fn part_two(input: &str) -> Option<u64> {
+pub fn part2(input: &str) -> u64 {
     let mut counter = 0;
     for line in input.lines() {
         let line = line.trim();
@@ -24,7 +27,7 @@ pub fn part_two(input: &str) -> Option<u64> {
         }
     }
 
-    Some(counter)
+    counter
 }
 
 pub fn is_nice_part_1(s: &str) -> bool {
