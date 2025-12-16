@@ -1,7 +1,7 @@
+use crate::template::Day;
 use std::error::Error;
 use std::fmt::Display;
 use std::str::FromStr;
-use crate::template::Day;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Year(u32);
