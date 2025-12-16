@@ -2,13 +2,11 @@ use itertools::Itertools;
 use std::fmt;
 use z3::{Optimize, SatResult, ast::Int};
 
-pub type Input<'a> = &'a str;
-
 pub fn parse(input: &str) -> &str {
     input
 }
 
-pub fn part1(input: &Input) -> u64 {
+pub fn part1(input: &str) -> u64 {
     let mut counter = 0;
     for line in input.lines().map(str::trim) {
         let mut tokens = line.split_whitespace();
@@ -45,7 +43,7 @@ pub fn part1(input: &Input) -> u64 {
     counter
 }
 
-pub fn part2(input: &Input) -> u64 {
+pub fn part2(input: &str) -> u64 {
     let mut total = 0;
     for line in input.lines().map(str::trim) {
         let machine = Machine::parse(line);

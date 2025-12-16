@@ -1,6 +1,8 @@
-aoc_2024::solution!(2);
+pub fn parse(input: &str) -> &str {
+    input
+}
 
-pub fn part_one(input: &str) -> Option<u64> {
+pub fn part1(input: &str) -> u64 {
     let mut safety_count = 0;
 
     for line in input.lines() {
@@ -37,10 +39,10 @@ pub fn part_one(input: &str) -> Option<u64> {
         }
     }
 
-    Some(safety_count)
+    safety_count
 }
 
-pub fn part_two(input: &str) -> Option<u64> {
+pub fn part2(input: &str) -> u64 {
     let mut safety_count = 0;
 
     for line in input.lines() {
@@ -86,22 +88,18 @@ pub fn part_two(input: &str) -> Option<u64> {
         }
     }
 
-    Some(safety_count)
+    safety_count
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::*;
 
     #[test]
-    fn test_part_one() {
-        let result = part_one(&aoc_2024::template::read_file("examples", DAY));
-        assert_eq!(result, Some(2));
-    }
-
-    #[test]
-    fn test_part_two() {
-        let result = part_two(&aoc_2024::template::read_file("examples", DAY));
-        assert_eq!(result, Some(4));
+    fn test() {
+        let input = template::read_file("examples", year!(2024), day!(2));
+        assert_eq!(part1(&input), 2);
+        assert_eq!(part2(&input), 4);
     }
 }

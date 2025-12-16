@@ -1,12 +1,10 @@
 use std::str::FromStr;
 
-pub type Input<'a> = &'a str;
-
 pub fn parse(input: &str) -> &str {
     input
 }
 
-pub fn part1(input: &Input) -> u64 {
+pub fn part1(input: &str) -> u64 {
     let mut inputs = Vec::<Vec<&str>>::new();
     let num_problems = input
         .lines()
@@ -39,7 +37,7 @@ pub fn part1(input: &Input) -> u64 {
     total
 }
 
-pub fn part2(input: &Input) -> u64 {
+pub fn part2(input: &str) -> u64 {
     let num_chars = input.lines().next().unwrap().chars().count();
     let num_lines = input.lines().count();
 
