@@ -1,13 +1,19 @@
+#![warn(clippy::pedantic)]
+#![allow(clippy::missing_panics_doc)]
+
 type Input = Option<i32>;
 
+#[must_use]
 pub fn parse(input: &str) -> Input {
     Some(0)
 }
 
+#[must_use]
 pub fn part1(input: &Input) -> i32 {
     input.0
 }
 
+#[must_use]
 pub fn part2(input: &Input) -> i32 {
     input.0
 }

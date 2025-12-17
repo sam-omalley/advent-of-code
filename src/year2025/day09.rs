@@ -1,15 +1,21 @@
+#![warn(clippy::pedantic)]
+#![allow(clippy::missing_panics_doc)]
+#![allow(clippy::missing_errors_doc)]
+use crate::util::vec2::{Rectangle, Vec2};
 use itertools::Itertools;
 use std::error::Error;
 
 pub type Input = Tiles;
 
+#[must_use]
 pub fn parse(input: &str) -> Input {
     Tiles::parse(input).unwrap()
 }
 
+#[must_use]
 pub fn part1(tiles: &Input) -> u64 {
-    let mut smallest_p = Point::new(i64::MAX, i64::MAX);
-    let mut biggest_p = Point::new(i64::MIN, i64::MIN);
+    let mut smallest_p = Vec2::new(i64::MAX, i64::MAX);
+    let mut biggest_p = Vec2::new(i64::MIN, i64::MIN);
 
     for p in &tiles.tiles {
         smallest_p = smallest_p.min(*p);
@@ -22,11 +28,12 @@ pub fn part1(tiles: &Input) -> u64 {
         .combinations(2)
         .map(|v| Rectangle::new(**v.first().unwrap(), **v.last().unwrap()))
         .collect();
-    rectangles.sort_by_key(|r| r.area());
+    rectangles.sort_by_key(Rectangle::area);
 
     rectangles.iter().last().unwrap().area() as u64
 }
 
+#[must_use]
 pub fn part2(tiles: &Input) -> u64 {
     let mut rectangles: Vec<Rectangle> = tiles
         .tiles
@@ -34,7 +41,7 @@ pub fn part2(tiles: &Input) -> u64 {
         .combinations(2)
         .map(|v| Rectangle::new(**v.first().unwrap(), **v.last().unwrap()))
         .collect();
-    rectangles.sort_by_key(|r| r.area());
+    rectangles.sort_by_key(Rectangle::area);
 
     'outer: for r in rectangles.iter().rev() {
         for (p1, p2) in tiles
@@ -55,7 +62,7 @@ pub fn part2(tiles: &Input) -> u64 {
 
 #[derive(Clone, Default, Debug)]
 pub struct Tiles {
-    pub tiles: Vec<Point>,
+    pub tiles: Vec<Vec2>,
 }
 
 impl Tiles {
@@ -74,7 +81,7 @@ impl Tiles {
         let parts: Vec<&str> = val.split(',').collect();
 
         if parts.len() == 2 {
-            let p = Point {
+            let p = Vec2 {
                 x: parts[0].parse().unwrap(),
                 y: parts[1].parse().unwrap(),
             };
@@ -90,9 +97,9 @@ impl Tiles {
     pub fn print(&self, width: usize, height: usize, rectangle: Option<Rectangle>) {
         for row in 0..height {
             for col in 0..width {
-                let p = Point {
-                    x: col as i64,
-                    y: row as i64,
+                let p = Vec2 {
+                    x: i64::try_from(col).ok().unwrap(),
+                    y: i64::try_from(row).ok().unwrap(),
                 };
                 if let Some(r) = rectangle
                     && r.encloses(&p)
@@ -112,66 +119,6 @@ impl Tiles {
     }
 }
 
-#[derive(Clone, Copy, Default, Eq, PartialEq, Ord, PartialOrd, Debug)]
-pub struct Point {
-    pub x: i64,
-    pub y: i64,
-}
-
-impl Point {
-    pub fn new(x: i64, y: i64) -> Self {
-        Point { x, y }
-    }
-}
-
-#[derive(Default, Debug, Clone, Copy)]
-pub struct Rectangle {
-    p1: Point,
-    p2: Point,
-}
-
-impl Rectangle {
-    pub fn new(p1: Point, p2: Point) -> Self {
-        Rectangle { p1, p2 }
-    }
-
-    pub fn encloses(&self, p: &Point) -> bool {
-        let min = self.min();
-        let max = self.max();
-        min.x <= p.x && p.x <= max.x && min.y <= p.y && p.y <= max.y
-    }
-
-    pub fn min(&self) -> Point {
-        Point {
-            x: self.p1.x.min(self.p2.x),
-            y: self.p1.y.min(self.p2.y),
-        }
-    }
-
-    pub fn max(&self) -> Point {
-        Point {
-            x: self.p1.x.max(self.p2.x),
-            y: self.p1.y.max(self.p2.y),
-        }
-    }
-
-    pub fn area(&self) -> i64 {
-        let min = self.min();
-        let max = self.max();
-
-        (max.x - min.x + 1) * (max.y - min.y + 1)
-    }
-
-    pub fn intersects(&self, segment: &Rectangle) -> bool {
-        let r_min = self.min();
-        let r_max = self.max();
-        let s_min = segment.min();
-        let s_max = segment.max();
-
-        !(r_min.x >= s_max.x || r_max.x <= s_min.x || r_min.y >= s_max.y || r_max.y <= s_min.y)
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -179,20 +126,21 @@ mod tests {
 
     #[test]
     fn test_part_one() {
-        let result = part1(&parse(&template::read_file("examples", year!(2025), day!(9))));
+        let result = part1(&parse(&template::read_file(
+            "examples",
+            year!(2025),
+            day!(9),
+        )));
         assert_eq!(result, 50);
     }
 
     #[test]
     fn test_part_two() {
-        let result = part2(&parse(&template::read_file("examples", year!(2025), day!(9))));
+        let result = part2(&parse(&template::read_file(
+            "examples",
+            year!(2025),
+            day!(9),
+        )));
         assert_eq!(result, 24);
-    }
-
-    #[test]
-    fn rectangle_area() {
-        let r = Rectangle::new(Point::new(2, 5), Point::new(11, 1));
-
-        assert_eq!(r.area(), 50);
     }
 }

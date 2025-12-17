@@ -1,4 +1,6 @@
-use aoc::util::ansi::*;
+#![warn(clippy::pedantic)]
+
+use aoc::util::ansi::{BOLD, RED, RESET, WHITE, YELLOW};
 use std::fs::read_to_string;
 use std::time::{Duration, Instant};
 
@@ -77,11 +79,7 @@ mod args {
 
 fn main() {
     // Build list of all solutions.
-    let solutions = [
-        year2015(),
-        year2024(),
-        year2025(),
-    ];
+    let solutions = [year2015(), year2024(), year2025()];
 
     match parse() {
         Err(err) => {
@@ -115,7 +113,7 @@ fn main() {
                 println!("{BOLD}{WHITE}🕓 {} ms{RESET}", duration.as_millis());
             }
         },
-    };
+    }
 }
 
 struct Solution {
