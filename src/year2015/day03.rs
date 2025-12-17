@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use std::ops::{Add, AddAssign};
+use crate::util::vec2::*;
 
 pub type Input = Vec<Vec2>;
 
@@ -7,10 +7,10 @@ pub fn parse(input: &str) -> Input {
     let mut directions = Vec::default();
     for char in input.trim().chars() {
         let direction = match char {
-            '^' => Vec2(0, 1),
-            '>' => Vec2(1, 0),
-            'v' => Vec2(0, -1),
-            '<' => Vec2(-1, 0),
+            '^' => Vec2::new(0, 1),
+            '>' => Vec2::new(1, 0),
+            'v' => Vec2::new(0, -1),
+            '<' => Vec2::new(-1, 0),
             _ => continue,
         };
 
@@ -54,23 +54,6 @@ pub fn part2(directions: &Input) -> u64 {
     }
 
     visited_count.len() as u64
-}
-
-#[derive(Default, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Vec2(pub i64, pub i64);
-
-impl Add for Vec2 {
-    type Output = Self;
-
-    fn add(self, other: Self) -> Self {
-        Self(self.0 + other.0, self.1 + other.1)
-    }
-}
-
-impl AddAssign for Vec2 {
-    fn add_assign(&mut self, other: Self) {
-        *self = Self(self.0 + other.0, self.1 + other.1)
-    }
 }
 
 #[cfg(test)]
