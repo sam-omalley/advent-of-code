@@ -1,3 +1,5 @@
+#![warn(clippy::pedantic)]
+#![allow(clippy::missing_panics_doc)]
 use petgraph::algo;
 use petgraph::graph::{DiGraph, NodeIndex};
 use petgraph::visit::Topo;
@@ -6,13 +8,14 @@ use std::collections::hash_map::RandomState;
 
 pub type Input = (DiGraph<String, ()>, HashMap<String, NodeIndex>);
 
+#[must_use]
 pub fn parse(input: &str) -> Input {
     let mut graph = DiGraph::new();
     let mut lookup = HashMap::new();
 
     for line in input.lines().map(str::trim).filter(|&s| !s.is_empty()) {
         let mut iter = line.split_whitespace();
-        let name = iter.next().unwrap().replace(":", "");
+        let name = iter.next().unwrap().replace(':', "");
 
         let node = graph.add_node(name.clone());
 
@@ -23,7 +26,7 @@ pub fn parse(input: &str) -> Input {
 
     for line in input.lines().map(str::trim).filter(|&s| !s.is_empty()) {
         let mut iter = line.split_whitespace();
-        let name = iter.next().unwrap().replace(":", "");
+        let name = iter.next().unwrap().replace(':', "");
 
         let src = lookup[&name];
 
@@ -36,6 +39,7 @@ pub fn parse(input: &str) -> Input {
     (graph, lookup)
 }
 
+#[must_use]
 pub fn part1(input: &Input) -> u64 {
     let (graph, lookup) = input;
 
@@ -47,6 +51,7 @@ pub fn part1(input: &Input) -> u64 {
     result.count().try_into().unwrap()
 }
 
+#[must_use]
 pub fn part2(input: &Input) -> u64 {
     let (graph, lookup) = input;
 
@@ -65,6 +70,7 @@ pub fn part2(input: &Input) -> u64 {
     (svr_to_dac * dac_to_fft * fft_to_out) + (svr_to_fft * fft_to_dac * dac_to_out)
 }
 
+#[must_use]
 pub fn count_paths_dag(g: &DiGraph<String, ()>, start: NodeIndex, end: NodeIndex) -> u64 {
     let mut topo = Topo::new(&g);
     let mut order = Vec::new();

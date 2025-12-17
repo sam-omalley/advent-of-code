@@ -1,9 +1,14 @@
+#![warn(clippy::pedantic)]
+#![allow(clippy::missing_panics_doc)]
+#![allow(clippy::missing_errors_doc)]
+
 use itertools::Itertools;
 use std::collections::HashSet;
 use std::error::Error;
 
 pub type Input = PointCloud;
 
+#[must_use]
 pub fn parse(input: &str) -> Input {
     let mut cloud = PointCloud::default();
     for line in input.lines() {
@@ -13,15 +18,18 @@ pub fn parse(input: &str) -> Input {
     cloud
 }
 
+#[must_use]
 pub fn part1(cloud: &Input) -> u64 {
     let iterations = if cfg!(test) { 10 } else { 1000 };
     solve(cloud, iterations).expect("Expected result")
 }
 
+#[must_use]
 pub fn part2(cloud: &Input) -> u64 {
     solve(cloud, 0).expect("Expected result")
 }
 
+#[must_use]
 pub fn solve(cloud: &PointCloud, max_connections: usize) -> Option<u64> {
     let mut circuits = Vec::<HashSet<Point>>::default();
     let mut last_connection = (Point::default(), Point::default());
@@ -43,7 +51,7 @@ pub fn solve(cloud: &PointCloud, max_connections: usize) -> Option<u64> {
         })
     {
         if circuits.len() == 1 && circuits[0].len() == cloud.points.len() {
-            return Some(last_connection.0.0 as u64 * last_connection.1.0 as u64);
+            return Some(u64::try_from(last_connection.0.0).ok().unwrap() * u64::try_from(last_connection.1.0).ok().unwrap());
         }
 
         last_connection = (p1.clone(), p2.clone());
@@ -72,21 +80,18 @@ pub fn solve(cloud: &PointCloud, max_connections: usize) -> Option<u64> {
             let b = circuits[*b_idx].clone();
             circuits[*a_idx].extend(b);
             circuits.remove(*b_idx);
-
-            continue 'outer;
         } else if candidate_circuits.len() == 1 {
             let mut iter = candidate_circuits.iter();
             let a_idx = iter.next().unwrap();
             circuits[*a_idx].insert(p1.clone());
             circuits[*a_idx].insert(p2.clone());
-            continue 'outer;
         } else {
             panic!("This shouldn't happen: {}", candidate_circuits.len());
         }
     }
 
     if max_connections > 0 {
-        let mut lengths: Vec<usize> = circuits.iter().map(|c| c.len()).collect();
+        let mut lengths: Vec<usize> = circuits.iter().map(HashSet::len).collect();
         lengths.sort_unstable_by(|a, b| b.cmp(a));
         Some(lengths.iter().take(3).product::<usize>() as u64)
     } else {
@@ -130,6 +135,7 @@ impl Point {
         self.2 = val;
     }
 
+    #[must_use]
     pub fn distance2(&self, other: &Point) -> i64 {
         (other.0 - self.0).pow(2) + (other.1 - self.1).pow(2) + (other.2 - self.2).pow(2)
     }

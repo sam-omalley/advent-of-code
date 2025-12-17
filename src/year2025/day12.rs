@@ -1,3 +1,5 @@
+#![warn(clippy::pedantic)]
+#![allow(clippy::missing_panics_doc)]
 pub struct Input {
     pub shapes: Vec<Shape>,
     pub spaces: Vec<Space>,
@@ -9,12 +11,12 @@ pub fn parse(input: &str) -> Input {
     let mut spaces = Vec::new();
 
     for line in input.lines().map(str::trim) {
-        if line.contains("x") {
+        if line.contains('x') {
             spaces.push(Space::new(line));
         } else if line.is_empty() {
             shapes.push(Shape::new(&shape));
             shape.clear();
-        } else if line.contains(".") || line.contains("#") {
+        } else if line.contains('.') || line.contains('#') {
             shape.push(line);
         }
     }
@@ -29,6 +31,7 @@ pub fn parse(input: &str) -> Input {
     Input { shapes, spaces }
 }
 
+#[must_use]
 pub fn part1(input: &Input) -> u64 {
     let mut easy_fit = 0;
     #[allow(unused_variables)]
@@ -70,6 +73,7 @@ pub fn part1(input: &Input) -> u64 {
     easy_fit
 }
 
+#[must_use]
 pub fn part2(_input: &Input) -> &'static str {
     "n/a"
 }
@@ -80,11 +84,12 @@ pub struct Shape {
 }
 
 impl Shape {
+    #[must_use]
     pub fn new(s: &Vec<&str>) -> Self {
         let mut shape = Self { shape: [false; 9] };
         for (row, line) in s.iter().enumerate() {
             for (col, char) in line.chars().enumerate() {
-                shape.shape[row * 3 + col] = char == '#'
+                shape.shape[row * 3 + col] = char == '#';
             }
         }
 
@@ -110,35 +115,38 @@ impl std::fmt::Display for Shape {
 
 #[derive(Clone, Debug, Default)]
 pub struct Space {
-    space: Vec<bool>,
+    data: Vec<bool>,
     pub width: usize,
     pub length: usize,
     pub requirements: Vec<usize>,
 }
 
 impl Space {
+    #[must_use]
     pub fn new(s: &str) -> Self {
         let mut res = Self::default();
 
-        let mut iter = s.split(":");
+        let mut iter = s.split(':');
         let size = iter.next().unwrap().trim();
         for requirement in iter.next().unwrap().split_whitespace() {
             res.requirements.push(requirement.parse().unwrap());
         }
 
-        let mut iter = size.split("x");
+        let mut iter = size.split('x');
         res.width = iter.next().unwrap().parse().unwrap();
         res.length = iter.next().unwrap().parse().unwrap();
 
-        res.space.resize(res.width * res.length, false);
+        res.data.resize(res.width * res.length, false);
 
         res
     }
 
+    #[must_use]
     pub fn area(&self) -> usize {
         self.width * self.length
     }
 
+    #[must_use]
     pub fn get_bounds(&self, shapes: &[Shape]) -> (usize, usize) {
         let mut max_area = 0;
         let mut min_area = 0;
@@ -154,13 +162,13 @@ impl Space {
 
 impl std::fmt::Display for Space {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        for (idx, val) in self.space.iter().enumerate() {
+        for (idx, val) in self.data.iter().enumerate() {
             if *val {
                 f.write_str("#")?;
             } else {
                 f.write_str(".")?;
             }
-            if idx % self.width == self.width - 1 && idx < self.space.len() - 1 {
+            if idx % self.width == self.width - 1 && idx < self.data.len() - 1 {
                 f.write_str("\n")?;
             }
         }

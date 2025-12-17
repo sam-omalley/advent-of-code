@@ -1,11 +1,15 @@
+#![warn(clippy::pedantic)]
+#![allow(clippy::missing_panics_doc)]
 use itertools::Itertools;
 use std::fmt;
 use z3::{Optimize, SatResult, ast::Int};
 
+#[must_use]
 pub fn parse(input: &str) -> &str {
     input
 }
 
+#[must_use]
 pub fn part1(input: &str) -> u64 {
     let mut counter = 0;
     for line in input.lines().map(str::trim) {
@@ -43,6 +47,7 @@ pub fn part1(input: &str) -> u64 {
     counter
 }
 
+#[must_use]
 pub fn part2(input: &str) -> u64 {
     let mut total = 0;
     for line in input.lines().map(str::trim) {
@@ -57,6 +62,7 @@ pub fn part2(input: &str) -> u64 {
 pub struct BitMask(pub u32);
 
 impl BitMask {
+    #[must_use]
     pub fn parse_indicators(s: &str) -> Self {
         let mut chars = s.chars().rev();
 
@@ -80,11 +86,12 @@ impl BitMask {
         Self(mask)
     }
 
+    #[must_use]
     pub fn parse_button(s: &str) -> Self {
         let trimmed = &s[1..s.len() - 1];
 
         let mut mask: u32 = 0;
-        for token in trimmed.split(",") {
+        for token in trimmed.split(',') {
             let val: u32 = token.parse().unwrap();
             mask |= 1 << val;
         }
@@ -100,7 +107,7 @@ impl fmt::Display for BitMask {
 }
 impl fmt::Debug for BitMask {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self)
+        write!(f, "{self}")
     }
 }
 
@@ -110,12 +117,14 @@ pub struct Machine {
     buttons: Vec<Vec<usize>>,
 }
 
+#[must_use]
 pub fn get_csv(s: &str) -> Vec<&str> {
     // Slice off the brackets, and return csv iterator
-    s[1..s.len() - 1].split(",").collect()
+    s[1..s.len() - 1].split(',').collect()
 }
 
 impl Machine {
+    #[must_use]
     pub fn parse(line: &str) -> Self {
         let mut tokens = line.split_whitespace();
 
@@ -151,12 +160,13 @@ impl Machine {
         }
     }
 
+    #[must_use]
     pub fn solve(&self) -> u64 {
         let opt = Optimize::new();
 
         let mut variables = Vec::new();
         for (idx, _) in self.buttons.iter().enumerate() {
-            let var = Int::new_const(format!("x{}", idx));
+            let var = Int::new_const(format!("x{idx}"));
             opt.assert(&var.ge(Int::from_u64(0)));
 
             variables.push(var);
@@ -174,7 +184,7 @@ impl Machine {
                 &function
                     .iter()
                     .fold(Int::from_u64(0), |acc, &x| &acc + x)
-                    .eq(Int::from_u64(*requirement as u64)),
+                    .eq(Int::from_u64(u64::from(*requirement))),
             );
         }
 
