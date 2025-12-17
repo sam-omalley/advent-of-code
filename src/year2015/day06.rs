@@ -1,5 +1,5 @@
 use crate::util::vec2::*;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet, hash_map::Entry};
 
 #[derive(Debug)]
 pub enum Operation {
@@ -66,8 +66,34 @@ pub fn part1(input: &Input) -> usize {
     grid.len()
 }
 
-pub fn part2(_input: &Input) -> i32 {
-    0
+pub fn part2(input: &Input) -> u32 {
+    let mut grid = HashMap::<Vec2, u32>::default();
+    for op in input {
+        match op {
+            Operation::Add(r) => {
+                for p in r.points() {
+                    *grid.entry(p).or_insert(0) += 1;
+                }
+            }
+            Operation::Remove(r) => {
+                for p in r.points() {
+                    if let Entry::Occupied(mut e) = grid.entry(p) {
+                        let v = e.get_mut();
+                        *v = v.saturating_sub(1);
+                        if *v == 0 {
+                            e.remove();
+                        }
+                    }
+                }
+            }
+            Operation::Toggle(r) => {
+                for p in r.points() {
+                    *grid.entry(p).or_insert(0) += 2;
+                }
+            }
+        }
+    }
+    grid.values().sum()
 }
 
 #[cfg(test)]
