@@ -1,3 +1,4 @@
+use cached::Cached;
 use cached::proc_macro::cached;
 use std::collections::BTreeMap;
 use std::str::FromStr;
@@ -103,7 +104,7 @@ pub fn parse(input: &str) -> Input {
     operations
 }
 
-#[cached(key = "Value", convert = r#"{ value.clone() }"#)]
+#[cached(name = "VALUE_CACHE", key = "Value", convert = r#"{ value.clone() }"#)]
 pub fn solve_value(value: &Value, lookup: &Input) -> u16 {
     match value {
         Value::Reference(key) => solve_operator(&lookup[key], lookup),
@@ -111,7 +112,11 @@ pub fn solve_value(value: &Value, lookup: &Input) -> u16 {
     }
 }
 
-#[cached(key = "Operator", convert = r#"{ operator.clone() }"#)]
+#[cached(
+    name = "OP_CACHE",
+    key = "Operator",
+    convert = r#"{ operator.clone() }"#
+)]
 pub fn solve_operator(operator: &Operator, lookup: &Input) -> u16 {
     match operator {
         Operator::Binary { left, right, op } => {
@@ -127,6 +132,14 @@ pub fn solve_operator(operator: &Operator, lookup: &Input) -> u16 {
     }
 }
 
+pub fn solve(operator: &Operator, lookup: &Input) -> u16 {
+    /* Clear the cache explicitly because we are not hashing the lookup table. */
+    VALUE_CACHE.lock().unwrap().cache_clear();
+    OP_CACHE.lock().unwrap().cache_clear();
+
+    solve_operator(operator, lookup)
+}
+
 impl BinaryOp {
     pub fn apply(&self, left: u16, right: u16) -> u16 {
         match self {
@@ -139,11 +152,22 @@ impl BinaryOp {
 }
 
 pub fn part1(lookup: &Input) -> u16 {
-    solve_operator(&lookup["a"], lookup)
+    solve(&lookup["a"], lookup)
 }
 
-pub fn part2(_input: &Input) -> i32 {
-    0
+pub fn part2(lookup: &Input) -> u16 {
+    let a = solve(&lookup["a"], lookup);
+
+    let mut lookup = lookup.clone();
+
+    lookup.insert(
+        "b".to_string(),
+        Operator::Unary {
+            left: Value::Concrete(a),
+            negate: false,
+        },
+    );
+    solve(&lookup["a"], &lookup)
 }
 
 #[cfg(test)]
