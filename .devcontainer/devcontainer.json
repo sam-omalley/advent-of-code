@@ -1,0 +1,23 @@
+{
+    "name": "Rust + Z3",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
+    "features": {
+        "ghcr.io/devcontainers/features/rust:1": {
+            "version": "stable"
+        },
+        "ghcr.io/devcontainers-extra/features/apt-packages:1": {
+            "packages": "z3,libz3-dev,clang,libclang-dev"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "rust-lang.rust-analyzer",
+                "vadimcn.vscode-lldb",
+                "serayuzgur.crates",
+                "editorconfig.editorconfig"
+            ]
+        }
+    },
+    "postCreateCommand": "z3 --version && cargo --version"
+}
