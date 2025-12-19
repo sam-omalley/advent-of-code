@@ -23,7 +23,6 @@ pub fn part1(input: &str) -> usize {
                 |_: &Captures| "a",
             )
             .to_string();
-        println!("{line} vs {decode}");
         total += code_length - decode.to_ascii_lowercase().len();
     }
 
@@ -31,8 +30,14 @@ pub fn part1(input: &str) -> usize {
 }
 
 #[must_use]
-pub fn part2(_input: &str) -> i32 {
-    0
+pub fn part2(input: &str) -> usize {
+    let mut total = 0;
+    for line in input.lines() {
+        let diff = 2 + line.escape_default().to_string().len() - line.len();
+        println!("{line} -> {} = {diff}", line.escape_default());
+        total += diff;
+    }
+    total
 }
 
 #[cfg(test)]
@@ -41,8 +46,9 @@ mod tests {
     use crate::*;
 
     #[test]
-    fn test_part1() {
+    fn test() {
         let input = &template::read_file("examples", year!(2015), day!(8));
         assert_eq!(part1(&input), 12);
+        assert_eq!(part2(&input), 19);
     }
 }
