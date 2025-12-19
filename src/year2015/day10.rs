@@ -28,8 +28,12 @@ pub fn next(input: &str) -> String {
 }
 
 #[must_use]
-pub fn part2(_input: &str) -> String {
-    String::default()
+pub fn part2(input: &str) -> usize {
+    let mut prev = input.to_string();
+    for _ in 0..50 {
+        prev = next(&prev);
+    }
+    prev.len()
 }
 
 #[cfg(test)]
