@@ -1,25 +1,25 @@
 {
-  "search.exclude": {
-    "**/target": true
-  },
-  "lldb.verboseLogging": true,
-  "rust-analyzer.cargo.allFeatures": true,
-  "rust-analyzer.cargo.buildScripts.enable": true,
-  "rust-analyzer.procMacro.enable": true,
-  "rust-analyzer.check.command": "clippy",
-  "rust-analyzer.checkOnSave": true,
-  "editor.formatOnSave": true,
-  "[rust]": {
-    "editor.defaultFormatter": "rust-lang.rust-analyzer"
-  },
-  "rust-analyzer.rustfmt.extraArgs": [
-    "+stable"
-  ],
-  "rust-analyzer.inlayHints.typeHints.enable": true,
-  "rust-analyzer.inlayHints.parameterHints.enable": true,
-  "rust-analyzer.inlayHints.chainingHints.enable": true,
-  "rust-analyzer.diagnostics.experimental.enable": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit"
-  }
+    "search.exclude": {
+        "**/target": true
+    },
+    "lldb.verboseLogging": true,
+    "rust-analyzer.cargo.allFeatures": true,
+    "rust-analyzer.cargo.buildScripts.enable": true,
+    "rust-analyzer.procMacro.enable": true,
+    "rust-analyzer.check.command": "clippy",
+    "rust-analyzer.checkOnSave": true,
+    "editor.formatOnSave": true,
+    "[rust]": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer"
+    },
+    "rust-analyzer.rustfmt.extraArgs": [
+        "+stable"
+    ],
+    "rust-analyzer.inlayHints.typeHints.enable": true,
+    "rust-analyzer.inlayHints.parameterHints.enable": true,
+    "rust-analyzer.inlayHints.chainingHints.enable": true,
+    "rust-analyzer.diagnostics.experimental.enable": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit"
+    }
 }

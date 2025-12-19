@@ -2,8 +2,7 @@
     "recommendations": [
         "vadimcn.vscode-lldb",
         "rust-lang.rust-analyzer",
-		"serayuzgur.crates",
-		"editorconfig.editorconfig"
+        "fill-labs.dependi",
+        "editorconfig.editorconfig"
     ]
 }
-
