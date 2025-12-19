@@ -17,7 +17,7 @@ library!(util "Utility modules to handle common recurring Advent of Code pattern
 );
 
 library!(year2015 "Help Santa by solving puzzles to fix the weather machine's snow function."
-    day01, day02, day03, day04, day05, day06, day07, day08, day09
+    day01, day02, day03, day04, day05, day06, day07, day08, day09, day10
 );
 
 library!(year2024 "Locate the Chief Historian in time for the big Christmas sleigh launch."
