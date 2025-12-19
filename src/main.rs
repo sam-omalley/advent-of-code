@@ -168,7 +168,7 @@ macro_rules! run {
 }
 
 run!(year2015
-day01, day02, day03, day04, day05, day06, day07
+day01, day02, day03, day04, day05, day06, day07, day08
 );
 
 run!(year2024

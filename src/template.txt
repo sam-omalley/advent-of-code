@@ -21,16 +21,17 @@ pub fn part2(input: &Input) -> i32 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::*;
 
     #[test]
     fn test_part1() {
-        let result = part_one(&advent_of_code::template::read_file("examples", %YEAR%, %DAY%));
-        assert_eq!(result, 0);
+        let input = parse(&template::read_file("examples", year!(%YEAR%), day!(%DAY%)));
+        assert_eq!(part1(&input), 0);
     }
 
     #[test]
     fn test_part2() {
-        let result = part_two(&advent_of_code::template::read_file("examples", %YEAR%, %DAY%));
-        assert_eq!(result, 0);
+        let input = parse(&template::read_file("examples", year!(%YEAR%), day!(%DAY%)));
+        assert_eq!(part2(&input), 0);
     }
 }

@@ -169,20 +169,3 @@ pub fn part2(lookup: &Input) -> u16 {
     );
     solve(&lookup["a"], &lookup)
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_part1() {
-        let result = part_one(&advent_of_code::template::read_file("examples", 2015, 7));
-        assert_eq!(result, 0);
-    }
-
-    #[test]
-    fn test_part2() {
-        let result = part_two(&advent_of_code::template::read_file("examples", 2015, 7));
-        assert_eq!(result, 0);
-    }
-}
