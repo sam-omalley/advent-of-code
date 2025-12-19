@@ -34,7 +34,6 @@ pub fn part2(input: &str) -> usize {
     let mut total = 0;
     for line in input.lines() {
         let diff = 2 + line.escape_default().to_string().len() - line.len();
-        println!("{line} -> {} = {diff}", line.escape_default());
         total += diff;
     }
     total

@@ -1,5 +1,6 @@
 #![warn(clippy::pedantic)]
 #![allow(clippy::missing_panics_doc)]
+#![allow(unused_assignments)]
 pub struct Input {
     pub shapes: Vec<Shape>,
     pub spaces: Vec<Space>,
