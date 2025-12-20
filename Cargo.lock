@@ -41,6 +41,7 @@ dependencies = [
  "petgraph",
  "pico-args",
  "rayon",
+ "regex",
  "tinyjson",
  "z3",
 ]
