@@ -1,6 +1,8 @@
 #![warn(clippy::pedantic)]
 #![allow(clippy::missing_panics_doc)]
 
+use itertools::Itertools;
+use std::collections::HashSet;
 use std::io::Read;
 
 type Input = PasswordIterator;
@@ -24,16 +26,6 @@ impl PasswordIterator {
         Self { value: total }
     }
 }
-
-/*
->>> def p(idx):
-...     res = ""
-...     while idx > 0:
-...         idx -= 1
-...         res += l[idx % len(l)]
-...         idx //= len(l)
-...     return res[::-1]
- */
 
 impl Iterator for PasswordIterator {
     type Item = String;
@@ -61,10 +53,46 @@ pub fn parse(input: &str) -> Input {
 #[must_use]
 pub fn part1(input: &Input) -> String {
     let mut iter = input.clone();
-    for _ in 1..100 {
-        println!("{}", iter.next().unwrap());
+    loop {
+        let password = iter.next().unwrap();
+        if check_password(&password) {
+            return password;
+        }
     }
-    String::default()
+}
+
+fn check_password(password: &str) -> bool {
+    has_no_forbidden_characters(password)
+        && has_increasing_straight(password)
+        && has_pairs(password)
+}
+
+#[must_use]
+fn has_pairs(password: &str) -> bool {
+    let pairs: HashSet<char> = password
+        .chars()
+        .tuple_windows()
+        .filter(|(a, b)| a == b)
+        .map(|(a, _)| a)
+        .collect();
+
+    pairs.len() > 1
+}
+
+#[must_use]
+fn has_no_forbidden_characters(password: &str) -> bool {
+    !password.chars().any(|c| c == 'i' || c == 'o' || c == 'l')
+}
+
+#[must_use]
+fn has_increasing_straight(password: &str) -> bool {
+    let diff: Vec<i32> = password
+        .as_bytes()
+        .windows(2)
+        .map(|w| i32::from(w[1]) - i32::from(w[0]))
+        .collect();
+
+    diff.windows(2).any(|w| w[0] == 1 && w[1] == 1)
 }
 
 #[must_use]
@@ -75,17 +103,23 @@ pub fn part2(_input: &Input) -> i32 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::*;
 
     #[test]
     fn test_part1() {
-        let input = parse(&template::read_file("examples", year!(2015), day!(11)));
-        assert_eq!(part1(&input), 0);
-    }
+        let password = "abcdffaa";
+        assert!(has_no_forbidden_characters(password));
+        assert!(has_increasing_straight(password));
+        assert!(has_pairs(password));
+        assert!(check_password(password));
+        //let input = parse("abcdefgh");
+        //assert_eq!(part1(&input), "abcdffaa");
 
-    #[test]
-    fn test_part2() {
-        let input = parse(&template::read_file("examples", year!(2015), day!(11)));
-        assert_eq!(part2(&input), 0);
+        let password = "ghjaabcc";
+        assert!(has_no_forbidden_characters(password));
+        assert!(has_increasing_straight(password));
+        assert!(has_pairs(password));
+        assert!(check_password(password));
+        //let input = parse("ghijklmn");
+        //assert_eq!(part1(&input), "ghjaabcc");
     }
 }
