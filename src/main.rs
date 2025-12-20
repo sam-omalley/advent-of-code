@@ -101,6 +101,7 @@ fn main() {
                 }
             }
             AppArguments::Solve { year, day } => {
+                #[allow(unused_variables)]
                 // Run selected solutions.
                 let (stars, duration) = solutions
                     .iter()
