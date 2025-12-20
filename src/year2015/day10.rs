@@ -43,6 +43,6 @@ mod tests {
     #[test]
     fn test_part1() {
         let input = "1";
-        assert_eq!(part1(&input), "312211");
+        assert_eq!(part1(&input), "312211".len());
     }
 }
