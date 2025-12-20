@@ -96,8 +96,9 @@ fn has_increasing_straight(password: &str) -> bool {
 }
 
 #[must_use]
-pub fn part2(_input: &Input) -> i32 {
-    0
+pub fn part2(input: &Input) -> String {
+    let password = part1(input);
+    part1(&PasswordIterator::new(&password))
 }
 
 #[cfg(test)]
