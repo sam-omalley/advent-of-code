@@ -8,7 +8,7 @@ Solutions for [Advent of Code](https://adventofcode.com/) in [Rust](https://www.
 | :---: | :---:    |
 | 2025  | 24/24 ⭐ |
 | 2024  | 04/50 ⭐ |
-| 2015  | 23/50 ⭐ |
+| 2015  | 24/50 ⭐ |
 
 ---
 
